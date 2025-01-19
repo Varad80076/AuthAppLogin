@@ -19,7 +19,7 @@ function SignUp() {
   const collectData = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/auth/signup", {
+      const response = await axios.post("https://auth-app-login.vercel.app/auth/signup", {
         //   method: 'POST',
         //   headers: {
               // 'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ function SignUp() {
           </ul>
         </form>
       </div>
-      
+
 ):(
       //   <div className="w-[300px] h-fit m-2 p-5 justify-center flex flex-col border-black bg-[#887f7f] rounded-lg gap-4">
       //   <h1 className="text-black text-2xl text-center">Login Form</h1>

@@ -14,7 +14,7 @@ mongodb;
 //apply cors validation for client and server verification
 app.use(
   cors({
-    origin: ["http://localhost:5173"], // Frontend URL
+    origin: ["https://auth-app-sepia-pi.vercel.app/"], // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
     credentials: true, // Allow cookies if needed
