@@ -97,67 +97,70 @@ function SignUp() {
 
   return (
     <div>
-    {isSignUp ? (<div className="w-[400px] h-fit m-2 p-5 justify-center flex flex-col border-black bg-[#887f7f] rounded-lg gap-4"><h1 className="text-black text-2xl text-center">SignUp Form</h1>
-      <form onSubmit={collectData}>
-        <div className="flex justify-center ">
-          <ul className="flex flex-col flex-wrap items-start justify-center gap-2 ">
-            <li className="flex flex-col items-start">
-              <label>Username</label>
+    {isSignUp ? (
+      
+      <div className="w-[350px] h-fit m-5 p-6 justify-center flex flex-col border border-gray-300 shadow-lg bg-gradient-to-br from-gray-200 via-gray-300 to-gray-100 rounded-2xl gap-6 transition-all duration-300 hover:shadow-2xl animate-floating">
+        <h1 className="text-gray-800 text-3xl font-bold text-center mb-2">
+          Sign Up Form
+        </h1>
+        <form onSubmit={collectData} className="animate-slide-up">
+          <ul className="flex flex-col flex-wrap items-start justify-center gap-4">
+            <li className="flex flex-col items-start w-full">
+              <label className="text-gray-600 font-semibold">Username</label>
               <input
-                className="rounded-md border-2 px-2 w-64"
+                className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
                 type="text"
                 name="username"
                 placeholder="Enter your username"
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
+                onChange={(e) => setName(e.target.value)}
               />
             </li>
-            <li className="flex flex-col items-start">
-              <label>Email</label>
+            <li className="flex flex-col items-start w-full">
+              <label className="text-gray-600 font-semibold">Email</label>
               <input
-                className="rounded-md border-2 px-2 w-64"
+                className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
                 type="text"
                 name="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </li>
-            <li className="flex flex-col items-start">
-              <label>Password</label>
+            <li className="flex flex-col items-start w-full">
+              <label className="text-gray-600 font-semibold">Password</label>
               <input
-                className="rounded-md border-2 px-2 w-64"
-                type="text"
+                className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
+                type="password"
                 name="password"
                 placeholder="Enter your Password"
                 value={password}
-                onChange={(e) => {
-                  setpassword(e.target.value);
-                }}
+                onChange={(e) => setpassword(e.target.value)}
               />
             </li>
-
+    
             <button
-              className="bg-[#383434] hover:bg-[#2c2929] text-white px-2 py-1 rounded-md"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
               type="submit"
             >
               Submit
             </button>
-
-            <span className="flex flex-row">
-              if you have already account ? |{" "}
-              <a href={'#'} className="hover:text-blue-900 px-1" onClick={toggleForm} >
-              
-                login
+    
+            <span className="text-gray-500 text-sm text-center w-full">
+              Already have an account?{" "}
+              <a
+                href="#"
+                className="text-blue-600 font-semibold hover:underline"
+                onClick={toggleForm}
+              >
+                Login
               </a>
             </span>
           </ul>
-        </div>
-      </form> </div>):(
+        </form>
+      </div>
+      
+):(
       //   <div className="w-[300px] h-fit m-2 p-5 justify-center flex flex-col border-black bg-[#887f7f] rounded-lg gap-4">
       //   <h1 className="text-black text-2xl text-center">Login Form</h1>
       //   <form onSubmit={handleLogin}>
