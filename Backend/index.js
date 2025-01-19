@@ -10,7 +10,7 @@ require("dotenv").config();
 
 //database connectivity using calling mongodb veriable
 mongodb;
-
+app.options('*', cors());
 //apply cors validation for client and server verification
 app.use(
   cors({
@@ -24,6 +24,7 @@ app.use(
     mode: "no-cors",
   })
 );
+
 
 // This line of code enables your Express application to parse incoming JSON data in request bodies.it is Generally use in middleware
 app.use(bodyParser.json());
