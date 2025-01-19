@@ -18,7 +18,7 @@ app.use(
       "https://auth-app-sepia-pi.vercel.app/login",
       "https://auth-app-sepia-pi.vercel.app",
     ], // Frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    methods: ["GET", "POST", 'OPTIONS', "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
     credentials: true, // Allow cookies if needed
     mode: "no-cors",
