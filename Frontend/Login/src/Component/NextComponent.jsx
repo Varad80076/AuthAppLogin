@@ -1,4 +1,5 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation,Link } from 'react-router-dom';
+
 const NextComponent = () => {
   const location = useLocation();
   const { email, name } = location.state || {};
@@ -14,12 +15,12 @@ const NextComponent = () => {
         </p>
         
         <div className="flex justify-center">
-          <a
-            href={'/login'}
+          <Link
+            to={'/login'}
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-300"
           >
             Logout
-          </a>
+          </Link>
         </div>
       </div>
     </div>
