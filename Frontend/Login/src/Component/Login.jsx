@@ -1,18 +1,23 @@
 import { useState } from "react";
 import axios from "axios";
+import {login} from'../util/allAPIs.js';
 import { useNavigate } from "react-router-dom";
+import msg from "../messages/AllMessages"
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
+ 
   
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
     try {
-      const response = await axios.post("https://auth-app-login.vercel.app/auth/login", {
+      const response = await axios.post(login, {
+
         email,
         password,
       });
@@ -29,11 +34,11 @@ function Login() {
       setPassword("");
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        console.error("Login endpoint not found:", error);
-        alert("Login endpoint not found.");
+        console.error(msg.ENDPOINT, error);
+        alert(msg.ENDPOINT);
       } else {
         console.error("Login error:", error);
-        alert("Please! Check Your Credentials.");
+        alert(msg.CHECK_CREDENTIALS);
       }
       setEmail("");
       setPassword("");
@@ -62,12 +67,20 @@ function Login() {
               <label className="text-gray-600 font-semibold">Password</label>
               <input
                 className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </li>
+            <div className="flex justify-end gap-1 w-full">
+            <input
+               type="checkbox"
+               checked={showPassword}
+               onChange={() => setShowPassword(!showPassword)}
+               className="form-checkbox text-blue-500  "
+             />Show
+        </div>
             <button
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
               type="submit"
@@ -76,7 +89,7 @@ function Login() {
             </button>
             <span className="text-gray-500 text-sm text-center w-full">
               Don t have an account?{" "}
-              <a href={"/"} className="hover:text-blue-900 px-1">
+              <a href={"/"} className="text-blue-900 hover:underline font-semibold px-1">
                 signup
               </a>
             </span>

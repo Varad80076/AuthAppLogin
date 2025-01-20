@@ -2,12 +2,15 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import Login from "../Component/Login";
+import {signup} from'../util/allAPIs.js';
 
 function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
+  const [confpassword, setconfpassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const toggleForm = () => {
@@ -18,50 +21,61 @@ function SignUp() {
 
   const collectData = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("https://auth-app-login.vercel.app/auth/signup", {
-        //   method: 'POST',
-        //   headers: {
-              // 'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ name, email, password }),
-        name,
-        email,
-        password,
-      });
-
-      // if (!response.ok) {
-      //     throw new Error('Failed to send data');
-      // }
-
-      // const data = await response.json(data);
-      console.log(response.data);
-
-      if (response.status === 201) {
-        // Handle successful signup (e.g., redirect, show success message)
-        navigate("/login");
-        console.log('Signup successful');
-      } else if (response.status === 409) {
-        // Handle 409 Conflict (email already exists)
-        alert(response.data.alert); 
-      } else {
-        // Handle other errors
-        console.error('Signup failed:', response.data);
-        alert('An error occurred during signup.'); 
+      if(password.trim().length == 0 ){
+        alert("Password value should be in Integer or Number");
+        
       }
+      if(password.trim() != confpassword.trim()){
+        alert("please check password again")
+        
+      }
+      else{
+      try{
+        const response = await axios.post(signup, {
+          //   method: 'POST',
+          //   headers: {
+                // 'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify({ name, email, password }),
+          name,
+          email,
+          password,
+        });
+  
+        // if (!response.ok) {
+        //     throw new Error('Failed to send data');
+        // }
+  
+        // const data = await response.json(data);
+        console.log(response.data);
+  
+        if (response.status === 201) {
+          // Handle successful signup (e.g., redirect, show success message)
+          navigate("/login");
+          console.log('Signup successful');
+        } else if (response.status === 409) {
+          // Handle 409 Conflict (email already exists)
+          alert(response.data.alert); 
+        } else {
+          // Handle other errors
+          console.error('Signup failed:', response.data);
+          alert('An error occurred during signup.'); 
+        }
+  
+        setName("");
+        setEmail("");
+        setpassword("");
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to send message. Please try again later.");
+        setName("");
+        setEmail("");
+        setpassword("");
+      }
+      
 
-      setName("");
-      setEmail("");
-      setpassword("");
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to send message. Please try again later.");
-      setName("");
-      setEmail("");
-      setpassword("");
-    }
   };
-
+  }
 
   // const handleLogin = async(e) => {
   //   e.preventDefault();
@@ -131,14 +145,33 @@ function SignUp() {
               <label className="text-gray-600 font-semibold">Password</label>
               <input
                 className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your Password"
                 value={password}
                 onChange={(e) => setpassword(e.target.value)}
               />
             </li>
-    
+            <li className="flex flex-col items-start w-full">
+              <label className="text-gray-600 font-semibold">Confirm Password</label>
+              <input
+                className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your Password"
+                value={confpassword}
+                onChange={(e) => setconfpassword(e.target.value)}
+              />
+       
+            </li>
+            <div className="flex justify-end gap-1 w-full">
+            <input
+               type="checkbox"
+               checked={showPassword}
+               onChange={() => setShowPassword(!showPassword)}
+               className="form-checkbox text-blue-500  "
+             />Show
+        </div>
             <button
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
               type="submit"

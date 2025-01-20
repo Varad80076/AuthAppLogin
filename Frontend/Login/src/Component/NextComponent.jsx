@@ -1,5 +1,4 @@
 import { useLocation } from 'react-router-dom';
-
 const NextComponent = () => {
   const location = useLocation();
   const { email, name } = location.state || {};
