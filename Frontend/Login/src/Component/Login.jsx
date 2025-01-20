@@ -3,6 +3,7 @@ import axios from "axios";
 import {login} from'../util/allAPIs.js';
 import { useNavigate } from "react-router-dom";
 import msg from "../messages/AllMessages"
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -89,10 +90,10 @@ function Login() {
             </button>
             <span className="text-gray-500 text-sm text-center w-full">
               Don t have an account?{" "}
-              <a href={"/"} className="text-blue-900 hover:underline font-semibold px-1">
+              <Link to={"/"} className="text-blue-900 hover:underline font-semibold px-1">
                 signup
-              </a>
-            </span>
+              </Link>
+            </span> 
           </ul>
         </form>
       </div>

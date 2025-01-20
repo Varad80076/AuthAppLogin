@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import Login from "../Component/Login";
 import {signup} from'../util/allAPIs.js';
+import { Link } from "react-router-dom";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -181,13 +182,13 @@ function SignUp() {
     
             <span className="text-gray-500 text-sm text-center w-full">
               Already have an account?{" "}
-              <a
+              <Link
                 href="#"
                 className="text-blue-600 font-semibold hover:underline"
                 onClick={toggleForm}
               >
                 Login
-              </a>
+              </Link>
             </span>
           </ul>
         </form>
