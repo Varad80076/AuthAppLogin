@@ -183,7 +183,7 @@ function SignUp() {
             <span className="text-gray-500 text-sm text-center w-full">
               Already have an account?{" "}
               <Link
-                href="#"
+                to="/login"
                 className="text-blue-600 font-semibold hover:underline"
                 onClick={toggleForm}
               >

@@ -9,19 +9,19 @@ const authRouter = require("./Routes/AuthRouter");
 require("dotenv").config();
 //database connectivity using calling mongodb veriable
 mongodb;
-// app.use(cors());
+app.use(cors());
 //apply cors validation for client and server verification
-app.use(
-  cors({
-    origin: [
-      process.env.FRONTEND_URL
-    ], // Frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-    credentials: true, // Allow cookies if needed
-    // mode: "no-cors",
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       process.env.FRONTEND_URL
+//     ], // Frontend URL
+//     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+//     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+//     credentials: true, // Allow cookies if needed
+//     // mode: "no-cors",
+//   })
+// );
 
 
 
