@@ -15,7 +15,7 @@
     "routes": [
        
        {
-        "src": "/api/auth/signup",
+        "src": "/(.*)",
         "dest": "/api/index.js",
         "headers": {
           "Access-Control-Allow-Origin": "https://auth-app-sepia-pi.vercel.app",
@@ -24,7 +24,7 @@
         }
       },
       {
-        "src": "/api/auth/login",
+        "src": "/(.*)",
         "dest": "/api/index.js",
         "headers": {
           "Access-Control-Allow-Origin": "https://auth-app-sepia-pi.vercel.app",
