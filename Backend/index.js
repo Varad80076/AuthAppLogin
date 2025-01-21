@@ -22,7 +22,7 @@ const corsOptions ={
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: 'Content-Type,Authorization', // Allowed headers
     credentials: true, // Allow cookies if needed
-    mode: 'no-cors'
+    // mode: 'no-cors'
   }
 
 app.use(cors(corsOptions));
