@@ -11,16 +11,18 @@ require("dotenv").config();
 mongodb;
 //apply cors validation for client and server verification
 console.log(process.env.FRONTEND_URL)
-app.use(
-  cors({
+
+const corsOptions ={
     origin: [
-      process.env.FRONTEND_URL
+      process.env.FRONTEND_URL,
+      "http://localhost:5173/"
     ], // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: 'Content-Type,Authorization', // Allowed headers
-    credentials: true, // Allow cookies if needed
-  })
-);
+    // credentials: true, // Allow cookies if needed
+  }
+
+app.use(cors(corsOptions));
 
 // This line of code enables your Express application to parse incoming JSON data in request bodies.
 app.use(bodyParser.json());
@@ -28,7 +30,7 @@ app.use(express.json());
 
 //Routing using /auth
 
-app.use("/varad", async (req, res) => {
+app.get("/varad", async (req, res) => {
   console.log('server is running')
 }); 
   
