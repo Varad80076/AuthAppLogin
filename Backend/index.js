@@ -15,11 +15,13 @@ console.log(process.env.FRONTEND_URL)
 const corsOptions ={
     origin: [
       process.env.FRONTEND_URL,
-      "http://localhost:5173/"
+      process.env.FRONTEND_URL2,
+      "http://localhost:5173"
     ], // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: 'Content-Type,Authorization', // Allowed headers
-    // credentials: true, // Allow cookies if needed
+    credentials: true, // Allow cookies if needed
+    mode: 'no-cors'
   }
 
 app.use(cors(corsOptions));
