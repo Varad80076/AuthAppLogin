@@ -17,7 +17,9 @@ app.use(
       const allowedOrigins = [
         process.env.FRONTEND_URL,
         process.env.FRONTEND_URL2,
-        "https://auth-app-sepia-pi.vercel.app"
+        "https://auth-app-sepia-pi.vercel.app",
+        "https://auth-app-sepia-pi.vercel.app/",
+        "http://localhost:5173"
       ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
@@ -40,7 +42,6 @@ app.use(express.json());
 
 //Routing using /auth
 
-app.use("/", console.log('server is running'));
 
 app.get("/varad", async (req, res) => {
   res.send('server is running')
