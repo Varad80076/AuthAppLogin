@@ -14,7 +14,8 @@ mongodb;
 app.use(
   cors({
     origin: [
-      process.env.FRONTEND_URL
+      process.env.FRONTEND_URL,
+      "https://auth-app-sepia-pi.vercel.app"
     ], // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
