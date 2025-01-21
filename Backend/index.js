@@ -11,6 +11,7 @@ require("dotenv").config();
 mongodb;
 // app.use(cors());
 //apply cors validation for client and server verification
+app.options('*', cors());
 app.use(
   cors({
     origin: [
