@@ -13,7 +13,7 @@
       }
     ],
     "routes": [
-        
+       {"source": "/api/(.*)"} ,
        {
         "src": "/api/auth/signup",
         "dest": "/api/index.js",
