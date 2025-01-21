@@ -41,10 +41,6 @@ app.use(express.json());
 //Routing using /auth
 
 app.use("/", console.log('server is running'));
-app.use("/auth", authRouter);
-
-//server in listening in port no
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`));
 
 app.get("/varad", async (req, res) => {
   res.send('server is running')
