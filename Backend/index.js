@@ -10,6 +10,7 @@ require("dotenv").config();
 //database connectivity using calling mongodb veriable
 mongodb;
 //apply cors validation for client and server verification
+console.log(process.env.FRONTEND_URL)
 app.use(
   cors({
     origin: [
