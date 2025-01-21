@@ -17,7 +17,7 @@ app.use(
       process.env.FRONTEND_URL
     ], // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+    allowedHeaders: 'Content-Type,Authorization', // Allowed headers
     credentials: true, // Allow cookies if needed
   })
 );
@@ -28,7 +28,10 @@ app.use(express.json());
 
 //Routing using /auth
 
-app.use("/", console.log('server is running'));
+app.use("/varad", async (req, res) => {
+  console.log('server is running')
+}); 
+  
 app.use("/auth", authRouter);
 
 //server in listening in port no
