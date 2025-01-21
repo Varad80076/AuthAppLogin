@@ -11,26 +11,5 @@
           "regions": ["iad1"]
         }
       }
-    ],
-    "routes": [
-       
-       {
-        "src": "/(.*)",
-        "dest": "/",
-        "headers": {
-          "Access-Control-Allow-Origin": "https://auth-app-sepia-pi.vercel.app",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization"
-        }
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/",
-        "headers": {
-          "Access-Control-Allow-Origin": "https://auth-app-sepia-pi.vercel.app",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization"
-        }
-      }
     ]
 }

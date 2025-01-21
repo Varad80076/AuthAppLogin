@@ -13,21 +13,18 @@ mongodb;
 //apply cors validation for client and server verification
 app.use(
   cors({
-    origin:[
+    origin: [
         process.env.FRONTEND_URL,
         process.env.FRONTEND_URL2,
         "https://auth-app-sepia-pi.vercel.app",
-        "https://auth-app-sepia-pi.vercel.app/",
         "http://localhost:5173"
-      ],// Frontend URL
-    
-      methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-      allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-      credentials: true, // Allow cookies if needed
-      mode: "no-cors",
-    }
-  )
+    ], // Frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+    credentials: true, // Allow cookies if needed
+  })
 );
+
 
 
 
