@@ -16,7 +16,7 @@
        
        {
         "src": "/(.*)",
-        "dest": "/api/index.js",
+        "dest": "/",
         "headers": {
           "Access-Control-Allow-Origin": "https://auth-app-sepia-pi.vercel.app",
           "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
@@ -25,7 +25,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "/api/index.js",
+        "dest": "/",
         "headers": {
           "Access-Control-Allow-Origin": "https://auth-app-sepia-pi.vercel.app",
           "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
