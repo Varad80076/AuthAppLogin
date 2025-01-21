@@ -27,6 +27,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 //Routing using /auth
+
+app.use("/", console.log('server is running'));
 app.use("/auth", authRouter);
 
 //server in listening in port no
