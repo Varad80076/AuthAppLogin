@@ -15,10 +15,7 @@ app.use(
   cors({
     origin: (origin, callback) => {
       const allowedOrigins = [
-        process.env.FRONTEND_URL,
         process.env.FRONTEND_URL2,
-        "https://auth-app-sepia-pi.vercel.app/",
-        "http://localhost:5173"
       ];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
