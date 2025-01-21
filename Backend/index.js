@@ -31,7 +31,7 @@ app.use(express.json());
 //Routing using /auth
 
 app.get("/varad", async (req, res) => {
-  console.log('server is running')
+  res.send('server is running')
 }); 
   
 app.use("/auth", authRouter);
