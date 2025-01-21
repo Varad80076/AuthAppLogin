@@ -17,7 +17,7 @@
             "src": "/(.*)",
             "dest": "index.js"
         },
-      {
+       {
         "src": "/api/auth/signup",
         "dest": "/api/index.js",
         "headers": {
