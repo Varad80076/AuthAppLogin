@@ -16,6 +16,7 @@ app.use(
     origin:[
         process.env.FRONTEND_URL,
         process.env.FRONTEND_URL2,
+        "https://auth-app-sepia-pi.vercel.app",
         "https://auth-app-sepia-pi.vercel.app/",
         "http://localhost:5173"
       ],// Frontend URL
