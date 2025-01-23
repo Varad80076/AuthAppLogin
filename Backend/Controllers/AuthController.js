@@ -4,7 +4,7 @@ const Users = require("../models/Users");
 const OTP = require("../models/Otp");
 const otpGenerator = require("otp-generator");
 const otpmailsender = require("../helper/mailer,js");
-const { log } = require("console");
+// const { log } = require("console");
 
 const signup = async (req, res) => {
   console.log("Server is Running");
@@ -16,7 +16,7 @@ const signup = async (req, res) => {
     if (existingUser) {
       return res
         .status(409)
-        .json({ message: "Email is already exists", success: false });
+        .json({ alert: "Email is already exists", success: false });
     }
     let user = new Users({ name, email, password }); //import Users Collection in user veriable
 
@@ -28,13 +28,13 @@ const signup = async (req, res) => {
 
     //send response to Client in console
     return res.status(201).json({
-      message: "User created successfully",
+      alert: "User created successfully",
       success: true,
       result,
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Failed to save data",
+      alert: "Failed to save data",
       success: false,
     });
   }
@@ -48,6 +48,7 @@ const login = async (req, res) => {
 
     // Find user by email and Check it is available in database or not
     const user = await Users.findOne({ email });
+    console.log('email:',user.email);
     if (!user) {
       return res.status(403).json({ message: errorMsg, success: false });
     }
@@ -71,29 +72,33 @@ const login = async (req, res) => {
       specialChars: false,
       lowerCaseAlphabets: false,
     });
+    const expirationTime = Date.now() + 5 * 1000;//5sec
 
     const existingOtp = await OTP.findOne({ email });
     if (existingOtp) {
       // Update the OTP if it already exists
-      await OTP.updateOne({ email }, { $set: { otp } });
+      await OTP.updateOne({ email }, { $set: { otp, time: expirationTime } });
     } else {
       // Create a new OTP entry
-      const newOtp = new OTP({ email, otp });
+      const newOtp = new OTP({ email, otp, time:expirationTime });
       await newOtp.save();
     }
 
-    const mailResponse = await otpmailsender(user.email, otp, "VERIFY");
+    const updatedOtp = await OTP.findOne({ email });
+   
 
+    const mailResponse = await otpmailsender(user.email, otp, "VERIFY");
     // console.log("OTP Email Response:", mailResponse);
 
     //sending response in console box to user in json format
 
     return res.status(200).json({
-      message: "Login success",
+      alert: "Login success",
       success: true,
       jwtToken,
       email,
       name: user.name,
+      time: updatedOtp.time
     });
   } catch (error) {
     return res.status(500).json({
@@ -105,19 +110,27 @@ const login = async (req, res) => {
 
 //OTP VERIFICATION CODE
 const verifyOtp = async (req, res) => {
+  console.log('running otp verification');
+  
   try {
-    const { email, otp } = req.body;
+    const { email, otp, timer } = req.body;
+    console.log('email:',email, 'otp: ',otp);
+    
     const user = await Users.findOne({ email });
     const existing = await OTP.findOne({ email });
 
     if (!existing) {
       return res.status(403).json({ success: false, alert: "Invalid OTP" });
     }
-    if (existing.otp === otp) {
+    
+    
+    if (existing.otp === otp ) {
       // OTP matches
-      existing.otp = null; // Clear OTP after successful verification
+      existing.otp = null;
+      existing.time = 0;
       existing.markModified("otp");
-      await existing.save();
+      existing.markModified("time");
+      await existing.save();  
 
       if (!user) {
         return res
@@ -133,10 +146,12 @@ const verifyOtp = async (req, res) => {
       });
     } else {
       // OTP does not match
+       
       return res
         .status(400)
         .json({ alert: "Invalid OTP! OTP not found", success: false });
     }
+    
   } catch (error) {
     res
       .status(500)
@@ -144,8 +159,49 @@ const verifyOtp = async (req, res) => {
   }
 };
 
+
+//Resend OTP
+const resendOTP = async (req, res) => {
+  console.log('server is running');
+  
+  try {
+    const { email } = req.body;
+    let otp = otpGenerator.generate(4, {
+      upperCaseAlphabets: false,
+      specialChars: false,
+      lowerCaseAlphabets: false,
+    });
+
+    const expirationTime = Date.now() + 5 * 1000;//5sec
+    const existingOtp = await OTP.findOne({ email });
+
+    if (existingOtp) {
+      // Update the OTP if it already exists
+      await OTP.updateOne({ email }, { $set: { otp, time: expirationTime } });
+    } else {
+      // Create a new OTP entry
+      const newOtp = new OTP({ email, otp, time:expirationTime });
+      await newOtp.save();
+    }
+    const updatedOtp = await OTP.findOne({ email });
+    
+    const mailResponse = await otpmailsender(updatedOtp.email, otp, "VERIFY");
+    return res.status(200).json({
+      alert: "Resend Otp success",
+      success: true,
+      updated_OTP:updatedOtp.otp
+    });
+  }
+  catch (error) {
+    res.status(500).json({ success: false, alert: "Failed to resend OTP"
+      });
+    }
+  };
+
+
 module.exports = {
   signup,
   login,
   verifyOtp,
+  resendOTP
 };

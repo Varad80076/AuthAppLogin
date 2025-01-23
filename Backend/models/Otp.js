@@ -11,6 +11,10 @@ const otpSchema = mongoose.Schema({
     type: "String",
     // required: true,
   },
+  time: {
+    type: "String",
+    // required: true,
+  },
 });
 //export Schema
 module.exports = mongoose.model("otps", otpSchema);
