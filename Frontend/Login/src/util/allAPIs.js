@@ -1,7 +1,7 @@
-
 const host = import.meta.env.VITE_API_KEY2;
 export const signup = `${host}auth/signup`;
 export const login = `${host}auth/login`;
 export const varad = `${host}auth/varad`;
-export const verifyOtp  = `${host}auth/verifyotp`;
-export const resendOtpUrl  = `${host}auth/resendotp`;
+export const verifyOtp = `${host}auth/verifyotp`;
+export const resendOtpUrl = `${host}auth/resendotp`;
+export const ForgetID = `${host}auth/forget`;

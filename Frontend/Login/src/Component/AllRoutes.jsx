@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import NextComponent from '../Component/NextComponent';
 import SignUp from '../Component/SignUp';
 import Login from '../Component/Login';
+import Forget from '../Component/Forget';
 
 function AllRoutes() {
   return (
@@ -10,6 +11,7 @@ function AllRoutes() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<Login />} />
         <Route path="/next" element={<NextComponent />} />
+        <Route path="/forget" element={<Forget />} />
       </Routes>
     </div>
   )
