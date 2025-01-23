@@ -11,5 +11,11 @@
           "regions": ["iad1"]
         }
       }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "api/index.js"
+        }
     ]
 }

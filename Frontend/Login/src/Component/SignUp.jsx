@@ -66,12 +66,14 @@ function SignUp() {
         setName("");
         setEmail("");
         setpassword("");
+        setShowPassword("");
       } catch (error) {
         console.error("Error:", error);
         alert("Failed to send message. Please try again later.");
         setName("");
         setEmail("");
         setpassword("");
+        setShowPassword("");
       }
       
 

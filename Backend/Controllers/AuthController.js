@@ -1,6 +1,10 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Users = require("../models/Users");
+const OTP = require("../models/Otp");
+const otpGenerator = require("otp-generator");
+const otpmailsender = require("../helper/mailer,js");
+const { log } = require("console");
 
 const signup = async (req, res) => {
   console.log("Server is Running");
@@ -23,7 +27,7 @@ const signup = async (req, res) => {
     let result = await user.save();
 
     //send response to Client in console
-   return res.status(201).json({
+    return res.status(201).json({
       message: "User created successfully",
       success: true,
       result,
@@ -59,7 +63,31 @@ const login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
+
+    //Generating the Otp for the Otp verification
+
+    let otp = otpGenerator.generate(4, {
+      upperCaseAlphabets: false,
+      specialChars: false,
+      lowerCaseAlphabets: false,
+    });
+
+    const existingOtp = await OTP.findOne({ email });
+    if (existingOtp) {
+      // Update the OTP if it already exists
+      await OTP.updateOne({ email }, { $set: { otp } });
+    } else {
+      // Create a new OTP entry
+      const newOtp = new OTP({ email, otp });
+      await newOtp.save();
+    }
+
+    const mailResponse = await otpmailsender(user.email, otp, "VERIFY");
+
+    // console.log("OTP Email Response:", mailResponse);
+
     //sending response in console box to user in json format
+
     return res.status(200).json({
       message: "Login success",
       success: true,
@@ -67,8 +95,7 @@ const login = async (req, res) => {
       email,
       name: user.name,
     });
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(500).json({
       message: "Failed to Login",
       success: false,
@@ -76,7 +103,49 @@ const login = async (req, res) => {
   }
 };
 
+//OTP VERIFICATION CODE
+const verifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await Users.findOne({ email });
+    const existing = await OTP.findOne({ email });
+
+    if (!existing) {
+      return res.status(403).json({ success: false, alert: "Invalid OTP" });
+    }
+    if (existing.otp === otp) {
+      // OTP matches
+      existing.otp = null; // Clear OTP after successful verification
+      existing.markModified("otp");
+      await existing.save();
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, alert: "User not found" });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        alert: "OTP verified successfully",
+        email: user.email,
+        name: user.name,
+      });
+    } else {
+      // OTP does not match
+      return res
+        .status(400)
+        .json({ alert: "Invalid OTP! OTP not found", success: false });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, alert: "OTP verification failed" });
+  }
+};
+
 module.exports = {
   signup,
   login,
+  verifyOtp,
 };

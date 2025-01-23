@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { signup, login } = require("../Controllers/AuthController");
+const { signup, login, verifyOtp } = require("../Controllers/AuthController");
 const {
   signupvalidation,
   loginvalidation,
@@ -9,5 +9,7 @@ const {
 router.post("/login", loginvalidation, login);
 
 router.post("/signup", signupvalidation, signup);
+
+router.post("/verifyotp", verifyOtp);
 
 module.exports = router;
