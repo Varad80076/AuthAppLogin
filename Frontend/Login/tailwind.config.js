@@ -7,6 +7,7 @@ export default {
       "fade-in": "fadeIn 1s ease-in-out",
       "slide-up": "slideUp 0.5s ease-out",
       "floating": "floating 6s ease-in-out infinite",
+      "spin": "spin 2s linear infinite",
     },
     keyframes: {
       fadeIn: {
@@ -21,6 +22,11 @@ export default {
         "0%, 100%": { transform: "translateY(-10px)" },
         "50%": { transform: "translateY(10px)" },
       },
+      spin: {
+        "0%, 100%": { transform: "rotate(0deg)" },
+        "50%": { transform: "rotate(180deg)" },
+        },
+        
     },
   },
   },

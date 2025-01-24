@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 import { login, verifyOtp, resendOtpUrl } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 import msg from "../messages/AllMessages";
 import { Link } from "react-router-dom";
+
 
 function Login() {
    const [email, setEmail] = useState("");
@@ -14,16 +15,21 @@ function Login() {
    const [otp, setOtp] = useState("");
    const [timer, setTimer] = useState(0);
    const [message, setMessage] = useState("");
+   const [isLoading, setIsLoading] = useState(false);
 
+
+//   setMessage(Message);
    //HANDEL LOGIN REQUEST
    const handleLogin = async (e) => {
       e.preventDefault();
-
+      
       try {
          const response = await axios.post(login, {
             email,
-            password,
+            password
          });
+
+        
          if (!response) {
             alert("failed to login");
             throw new Error("Failed to Login");
@@ -42,18 +48,34 @@ function Login() {
             alert("check email and password again ");
             setEmail("")
             setPassword("");
+            setIsLoading(false);
          } else {
             alert("check email and password again");
             setEmail("")
             setPassword("");
+            setIsLoading(false);
          }
          
       }
    };
 
+
+   useEffect(() => {
+      const handlePopState = () => {
+         navigate("/login", { replace: true });
+      };
+
+      window.addEventListener("popstate", handlePopState);
+
+      return () => {
+         window.removeEventListener("popstate", handlePopState);
+      };
+   }, [navigate]);
+
    //HANDEL OTP VERIFICATION REQUEST
    const handleOtpVerification = async (e) => {
       e.preventDefault();
+      
       try {
          const response = await axios.post(verifyOtp, { email, otp });
          if (response.data.success) {
@@ -72,8 +94,8 @@ function Login() {
          setOtp("");
       } catch (error) {
          alert("Failed to verify OTP.", error);
+         setOtp("");
       }
-      setOtp("");
    };
 
    //HANDEL RESET OTP REQUEST
@@ -91,8 +113,10 @@ function Login() {
       } catch (error) {
          if (error.response && error.response.status === 404) {
             alert("Login Error:", msg.ENDPOINT);
+            setOtp('');
          } else {
             alert("Login Error:", msg.CHECK_CREDENTIALS);
+            setOtp('');
          }
       }
    };
@@ -126,6 +150,11 @@ function Login() {
          });
       }, 1000);
    };
+   
+
+    
+
+  
 
    return (
       <div className="w-[350px] h-fit m-5 p-6 justify-center flex flex-col border border-gray-300 shadow-lg bg-gradient-to-br from-gray-200 via-gray-300 to-gray-100 rounded-2xl gap-6 transition-all duration-300 hover:shadow-2xl animate-floating">
@@ -181,8 +210,16 @@ function Login() {
                      </Link>
                      <button
                         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
-                        type="submit">
-                        Login
+                        type="submit"
+                        disabled={isLoading} // Disable button while loading
+                        >
+                        {isLoading ? (
+                        <>
+                            Logging in...
+                        </>
+                    ) : (
+                        "Login"
+                    )}
                      </button>
                      <span className="text-gray-500 text-sm text-center w-full">
                         Don't have an account?{" "}

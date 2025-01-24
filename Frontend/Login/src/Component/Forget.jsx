@@ -21,19 +21,19 @@ const ForgotPasswordForm = () => {
             password
          });
          if (!response) {
-            alert("failed reset");
+            alert(response.data.message);
             navigate("/");
-            throw new Error("Failed reset");
+            // throw new Error("Failed reset");
          }
          if (response.data.success) {
             navigate("/");
          } else {
-            alert("Failed reset");
+            alert(response.data.message);
             navigate("/");
          }
 
     } catch{
-            alert("check credentials");
+            alert("Please check email again");
             navigate("/")
     }
     }   
@@ -50,7 +50,7 @@ const ForgotPasswordForm = () => {
       <form onSubmit={handleResetSubmit} className="animate-slide-up">
         <ul className="flex flex-col flex-wrap items-start justify-center gap-4">
           <li className="flex flex-col items-start w-full">
-            <label className="text-gray-600 font-semibold">Email</label>
+            <label className="text-gray-600 font-semibold">Password</label>
             <input
               className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
               type="text"

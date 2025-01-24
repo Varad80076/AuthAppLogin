@@ -8,22 +8,17 @@ const mongodb = require("./models/db");
 const authRouter = require("./Routes/AuthRouter");
 require('dotenv').config();
 
+
 //database connectivity using calling mongodb veriable
 mongodb;
-// app.use(cors());
-//apply cors validation for client and server verification
 
+//apply cors validation for client and server verification
 app.options('*', cors());
 app.use(
   cors({
     origin: [
-
         process.env.FRONTEND_URL,
         process.env.FRONTEND_URL2,
-
-        // "https://auth-app-sepia-pi.vercel.app",
-        // "http://localhost:5173"
-
     ], // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
@@ -32,19 +27,17 @@ app.use(
 );
 
 
-
-
 // This line of code enables your Express application to parse incoming JSON data in request bodies.it is Generally use in middleware
 app.use(bodyParser.json());
 app.use(express.json());
 
-//Routing using /auth
 
-
+//GET Request for Trial
 app.get("/varad", async (req, res) => {
   res.send('server is running')
 }); 
-  
+
+//Routing using /auth
 app.use("/auth", authRouter);
 
 //server in listening in port no

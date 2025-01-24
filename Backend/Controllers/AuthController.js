@@ -16,7 +16,7 @@ const signup = async (req, res) => {
       if (existingUser) {
          return res
             .status(409)
-            .json({ alert: "Email is already exists", success: false });
+            .json({ message: "Email is already exists", success: false});
       }
       let user = new Users({ name, email, password }); //import Users Collection in user veriable
 
@@ -28,13 +28,12 @@ const signup = async (req, res) => {
 
       //send response to Client in console
       return res.status(201).json({
-         alert: "User created successfully",
+         message: "User created successfully",
          success: true,
-         result,
       });
    } catch (error) {
       return res.status(500).json({
-         alert: "Failed to save data",
+         message: "Failed to save data",
          success: false,
       });
    }
@@ -134,7 +133,7 @@ const verifyOtp = async (req, res) => {
          if (!user) {
             return res
                .status(404)
-               .json({ success: false, alert: "User not found" });
+               .json({ success: false, message: "User not found" });
          }
 
          return res.status(200).json({
@@ -186,12 +185,11 @@ const resendOTP = async (req, res) => {
       const updatedOtp = await OTP.findOne({ email });
       const mailResponse = await otpmailsender(updatedOtp.email, otp, "VERIFY");
       return res.status(200).json({
-         alert: "Resend Otp success",
+         message: "Resend Otp success",
          success: true,
-         updated_OTP: updatedOtp.otp,
       });
    } catch (error) {
-      res.status(500).json({ success: false, alert: "Failed to resend OTP" });
+      res.status(500).json({ success: false, message: "Failed to resend OTP" });
    }
 };
 
@@ -199,6 +197,7 @@ const resendOTP = async (req, res) => {
 const Forget = async (req, res) => {
    try {
       const { email, password } = req.body;
+
       const user = await Users.findOne({ email });
       const errorMsg = "User Not Found! Please try again."
       if (!user) {
@@ -215,15 +214,18 @@ const Forget = async (req, res) => {
             { email },
             { $set: { password:User.password } }
          )
+         return res.status(200).json({
+            message: "Password reset successfully",
+            success: true,
+         });
       }
       else{
-         alert('Failed to Reset')
+         return res.status(409).json({
+            message: "Password reset successfully",
+            success: true,
+         });
       }
-      return res.status(200).json({
-         alert: "Password Reset",
-         success: true,
-         password: User.password
-      });
+      
 
    } catch (error) {
       res.status(500).json({ success: false, alert: "Failed to Reset Password" });

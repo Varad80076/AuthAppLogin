@@ -35,13 +35,14 @@ function SignUp() {
 
             if (response.status === 201) {
                // Handle successful signup (e.g., redirect, show success message)
+               alert(response.data.message)
                navigate("/");
             } else if (response.status === 409) {
                // Handle 409 Conflict (email already exists)
-               alert(response.data.alert);
+               alert(response.data.message);
             } else {
                // Handle other errors
-               alert("An error occurred during signup.");
+               alert(response.data.message);
             }
 
             setName("");
@@ -49,11 +50,20 @@ function SignUp() {
             setpassword("");
             setconfpassword("");
          } catch (error) {
-            alert("Failed to send message. Please try again later.", error);
-            setName("");
-            setEmail("");
-            setpassword("");
-            setconfpassword("");
+            if (error.response && error.response.status === 404) {
+               alert("Failed to send message. Please try again later.", error);
+               setName("");
+               setEmail("");
+               setpassword("");
+               setconfpassword("");
+            }
+            else{
+               alert("Email is already exists", error);
+               setName("");
+               setEmail("");
+               setpassword("");
+               setconfpassword("");
+            }
          }
       }
    };
