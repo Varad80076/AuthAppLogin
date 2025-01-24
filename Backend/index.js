@@ -6,19 +6,24 @@ const cors = require("cors");
 const PORT = process.env.PORT || 4000;
 const mongodb = require("./models/db");
 const authRouter = require("./Routes/AuthRouter");
-require("dotenv").config();
+require('dotenv').config();
+
 //database connectivity using calling mongodb veriable
 mongodb;
 // app.use(cors());
 //apply cors validation for client and server verification
+
 app.options('*', cors());
 app.use(
   cors({
     origin: [
+
         process.env.FRONTEND_URL,
         process.env.FRONTEND_URL2,
+
         // "https://auth-app-sepia-pi.vercel.app",
         // "http://localhost:5173"
+
     ], // Frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
