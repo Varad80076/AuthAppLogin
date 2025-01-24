@@ -47,13 +47,13 @@ function SignUp() {
             setName("");
             setEmail("");
             setpassword("");
-            setShowPassword("");
+            setconfpassword("");
          } catch (error) {
             alert("Failed to send message. Please try again later.", error);
             setName("");
             setEmail("");
             setpassword("");
-            setShowPassword("");
+            setconfpassword("");
          }
       }
    };
