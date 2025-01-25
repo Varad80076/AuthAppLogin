@@ -22,7 +22,7 @@ function Login() {
    //HANDEL LOGIN REQUEST
    const handleLogin = async (e) => {
       e.preventDefault();
-      
+      setIsLoading(true)
       try {
          const response = await axios.post(login, {
             email,
@@ -38,6 +38,7 @@ function Login() {
          setMessage("OTP sent successfully");
          setTimeout(() => {
             setMessage(""); // Clear the message after 3 seconds
+            setIsLoading(false)
          }, 3000);
          startTimer();
          setIsOtpSent(true);
@@ -213,13 +214,13 @@ function Login() {
                         type="submit"
                         disabled={isLoading} // Disable button while loading
                         >
-                        {isLoading ? (
+                        {email==""||password =="" ?("Login"):(isLoading ? (
                         <>
                             Logging in...
                         </>
                     ) : (
                         "Login"
-                    )}
+                    ))}
                      </button>
                      <span className="text-gray-500 text-sm text-center w-full">
                         Don't have an account?{" "}
