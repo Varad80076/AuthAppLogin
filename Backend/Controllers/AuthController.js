@@ -206,7 +206,6 @@ const forgetpass = async (req,res) => {
       const { email } = req.body;
       const user = await Users.findOne({ email });
       const resetLink = `http://localhost:5173/password?email=${encodeURIComponent(email)}`;
-      console.log(resetLink);
       if (user.email === email) {
          const mailResponse = await otpmailsender(email,resetLink, null, "RESET");
          return res.status(200).json({

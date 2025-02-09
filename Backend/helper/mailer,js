@@ -29,7 +29,6 @@ require('dotenv').config();
               <h2>Reset Your Password</h2>
               <p>Hello,</p>
               <p>Please reset your password using This Link below:</p>
-              <h3 style="color: #4CAF50;">${process.env.FORGET_PASS}?email=${encodeURIComponent(email)}</h3>
               <a href="${link}" 
      style="color: #4CAF50; text-decoration: none; font-weight: bold;">
      Reset Password
