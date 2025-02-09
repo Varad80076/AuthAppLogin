@@ -138,10 +138,7 @@ function Login() {
    //HANDEL FORGET PASSWORD REQUEST
    const handleForgotClick = (e) => {
       e.preventDefault();
-      if(email){
-         alert("Please first enter your email ");
-      }else{navigate("/forget");
-      }
+      navigate("/forget");
       
     };
 
