@@ -5,7 +5,8 @@ const {
    login,
    verifyOtp,
    resendOTP,
-   Forget
+   forgetpass,
+   resetpass
 } = require("../Controllers/AuthController");
 const {
    signupvalidation,
@@ -20,6 +21,8 @@ router.post("/verifyotp", verifyOtp);
 
 router.post("/resendotp", resendOTP);
 
-router.post("/forget", Forget);
+router.post("/forget", forgetpass);
+
+router.post("/reset", resetpass);
 
 module.exports = router;

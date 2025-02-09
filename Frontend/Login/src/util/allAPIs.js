@@ -5,3 +5,4 @@ export const varad = `${host}auth/varad`;
 export const verifyOtp = `${host}auth/verifyotp`;
 export const resendOtpUrl = `${host}auth/resendotp`;
 export const ForgetID = `${host}auth/forget`;
+export const ForgetPASS = `${host}auth/reset`;

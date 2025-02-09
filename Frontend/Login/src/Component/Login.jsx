@@ -4,7 +4,7 @@ import { login, verifyOtp, resendOtpUrl } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 import msg from "../messages/AllMessages";
 import { Link } from "react-router-dom";
-
+import { useLocation} from 'react-router-dom';
 
 function Login() {
    const [email, setEmail] = useState("");
@@ -16,9 +16,10 @@ function Login() {
    const [timer, setTimer] = useState(0);
    const [message, setMessage] = useState("");
    const [isLoading, setIsLoading] = useState(false);
+   const location = useLocation();
+   const { Message} = location.state || {};
 
-
-//   setMessage(Message);
+   
    //HANDEL LOGIN REQUEST
    const handleLogin = async (e) => {
       e.preventDefault();
@@ -29,7 +30,6 @@ function Login() {
             password
          });
 
-        
          if (!response) {
             alert("failed to login");
             throw new Error("Failed to Login");
@@ -68,10 +68,20 @@ function Login() {
 
       window.addEventListener("popstate", handlePopState);
 
+      if (Message) {
+         setMessage(Message); // Set the initial message
+         setTimeout(() => {
+            setMessage(""); // Clear the message after 3 seconds
+         }, 2000);
+         navigate({state: null });
+      }
+
       return () => {
          window.removeEventListener("popstate", handlePopState);
       };
-   }, [navigate]);
+   }, [navigate,Message]);
+
+   
 
    //HANDEL OTP VERIFICATION REQUEST
    const handleOtpVerification = async (e) => {
@@ -81,7 +91,7 @@ function Login() {
          const response = await axios.post(verifyOtp, { email, otp });
          if (response.data.success) {
             navigate("/next", {
-               state: { email: response.data.email, name: response.data.name },
+               state: { email: response.data.email, name: response.data.name,message },
             });
          } else {
             alert("Invalid OTP. Please try again.");
@@ -89,12 +99,15 @@ function Login() {
 
          if (response.data.success) {
             alert(response.data.alert);
+
          } else {
             alert("Invalid OTP. Please try again.");
          }
          setOtp("");
       } catch (error) {
          alert("Failed to verify OTP.", error);
+         setIsOtpSent(false);
+         setEmail("");
          setOtp("");
       }
    };
@@ -125,11 +138,11 @@ function Login() {
    //HANDEL FORGET PASSWORD REQUEST
    const handleForgotClick = (e) => {
       e.preventDefault();
-      if(!email){
+      if(email){
          alert("Please first enter your email ");
-      }else{navigate("/forget", {
-         state: { email: email},
-      });}
+      }else{navigate("/forget");
+      }
+      
     };
 
     //HANDEL TIMER FOR OTP VERIFICATION
@@ -207,7 +220,7 @@ function Login() {
                      
                      <Link className="ml-20 text-center" onClick={handleForgotClick}>
                         <span className="mr-1">Forget</span> 
-                        <span className="text-blue-500">Password ?</span> 
+                        <span className="text-blue-600 ">Password ?</span> 
                      </Link>
                      <button
                         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
@@ -226,7 +239,7 @@ function Login() {
                         Don't have an account?{" "}
                         <Link
                            to={"/signup"}
-                           className="text-blue-900 hover:underline font-semibold px-1">
+                           className="text-blue-600 hover:underline font-semibold px-1">
                            signup
                         </Link>
                      </span>

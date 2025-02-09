@@ -3,6 +3,7 @@ import NextComponent from '../Component/NextComponent';
 import SignUp from '../Component/SignUp';
 import Login from '../Component/Login';
 import Forget from '../Component/Forget';
+import Password from './password';
 
 function AllRoutes() {
   return (
@@ -10,8 +11,10 @@ function AllRoutes() {
       <Routes>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/next" element={<NextComponent />} />
         <Route path="/forget" element={<Forget />} />
+        <Route path="/password" element={<Password />} />
       </Routes>
     </div>
   )

@@ -2,9 +2,11 @@ import { useLocation,Link } from 'react-router-dom';
 
 const NextComponent = () => {
   const location = useLocation();
-  const { email, name } = location.state || {};
+  const { email, name,message } = location.state || {};
 
   return (
+    <>
+    <p>{message}</p>
     <div className="w-full min-h-screen bg-gradient-to-br from-blue-200 via-blue-300 to-blue-500 flex justify-center items-center">
       <div className="w-[400px] p-6 bg-white rounded-lg shadow-lg border border-gray-200 space-y-6">
         <h1 className="text-3xl font-bold text-center text-gray-800">
@@ -24,6 +26,7 @@ const NextComponent = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

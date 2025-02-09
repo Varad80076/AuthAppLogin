@@ -88,7 +88,7 @@ const login = async (req, res) => {
 
       const updatedOtp = await OTP.findOne({ email });
 
-      const mailResponse = await otpmailsender(user.email, otp, "VERIFY");
+      const mailResponse = await otpmailsender(user.email,null, otp, "VERIFY");
 
       //sending response in console box to user in json format
 
@@ -113,8 +113,8 @@ const verifyOtp = async (req, res) => {
    console.log("running otp verification");
 
    try {
-      const { email, otp, timer } = req.body;
-
+      const { email, otp} = req.body;
+   
       const user = await Users.findOne({ email });
       const existing = await OTP.findOne({ email });
 
@@ -131,6 +131,7 @@ const verifyOtp = async (req, res) => {
          await existing.save();
 
          if (!user) {
+            
             return res
                .status(404)
                .json({ success: false, message: "User not found" });
@@ -142,8 +143,14 @@ const verifyOtp = async (req, res) => {
             email: user.email,
             name: user.name,
          });
+
       } else {
          // OTP does not match
+         existing.otp = null;
+         existing.time = 0;
+         existing.markModified("otp");
+         existing.markModified("time");
+            await existing.save();
          return res
             .status(400)
             .json({ alert: "Invalid OTP! OTP not found", success: false });
@@ -183,7 +190,7 @@ const resendOTP = async (req, res) => {
          await newOtp.save();
       }
       const updatedOtp = await OTP.findOne({ email });
-      const mailResponse = await otpmailsender(updatedOtp.email, otp, "VERIFY");
+      const mailResponse = await otpmailsender(updatedOtp.email,null, otp, "VERIFY");
       return res.status(200).json({
          message: "Resend Otp success",
          success: true,
@@ -192,13 +199,43 @@ const resendOTP = async (req, res) => {
       res.status(500).json({ success: false, message: "Failed to resend OTP" });
    }
 };
+//forget password email
+const forgetpass = async (req,res) => {
 
-//FORGET PASSWORD
-const Forget = async (req, res) => {
    try {
-      const { email, password } = req.body;
-
+      const { email } = req.body;
       const user = await Users.findOne({ email });
+      const resetLink = `http://localhost:5173/password?email=${encodeURIComponent(email)}`;
+      console.log(resetLink);
+      if (user.email === email) {
+         const mailResponse = await otpmailsender(email,resetLink, null, "RESET");
+         return res.status(200).json({
+            success: true,
+            message: "Mail send successfully",
+            email: user.email,
+            name: user.name,
+         });
+      } else {
+         // OTP does not match
+         return res
+            .status(400)
+            .json({ alert: "Invalid Email! Link not found", success: false });
+      }
+      
+   } catch (error) {
+      res.status(500).json({ success: false, alert: "Failed to send Email" });
+   }
+}
+
+
+//Reset Password
+const resetpass = async (req, res) => {
+
+   try {
+      
+      const { email,password } = req.body;
+      const user = await Users.findOne({ email });
+      console.log(user.email,email)
       const errorMsg = "User Not Found! Please try again."
       if (!user) {
          return res.status(403).json({ message: errorMsg, success: false });
@@ -213,10 +250,12 @@ const Forget = async (req, res) => {
          await Users.updateOne(
             { email },
             { $set: { password:User.password } }
+            
          )
          return res.status(200).json({
             message: "Password reset successfully",
             success: true,
+            
          });
       }
       else{
@@ -237,5 +276,6 @@ module.exports = {
    login,
    verifyOtp,
    resendOTP,
-   Forget
+   forgetpass,
+   resetpass
 };

@@ -1,25 +1,38 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import axios from "axios";
-import { ForgetID } from "../util/allAPIs.js";
+import { ForgetPASS } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 import { useLocation} from 'react-router-dom';
 
-
-const ForgotPasswordForm = () => {
-  const [email, setEmail] = useState('')
-  // const location = useLocation();
-  // const { email} = location.state || {};
+const Password = () => {
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("");
+  const location = useLocation();
   const navigate = useNavigate();
+  
+  
+
+
+
+   // Extract email from query parameters
+   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const emailParam = params.get("email");
+    setEmail(emailParam);
+  }, [location.search]);
+
+
+
 
     //HANDLE RESET PASSWORD
   const handleResetSubmit = async(event) => { 
     event.preventDefault()
-    // console.log(email);
-    
+    console.log(email);
+
     try {
-        const response = await axios.post(ForgetID, {
+        const response = await axios.post(ForgetPASS, {
             email,
-            // password
+            password
          });
          if (!response) {
             alert(response.data.message);
@@ -28,7 +41,7 @@ const ForgotPasswordForm = () => {
          }
          if (response.data.success) {
             navigate("/",
-              {state: { Message: response.data.message}});
+            {state: { Message: response.data.message}});
          } else {
             alert(response.data.message);
             navigate("/");
@@ -52,13 +65,13 @@ const ForgotPasswordForm = () => {
       <form onSubmit={handleResetSubmit} className="animate-slide-up">
         <ul className="flex flex-col flex-wrap items-start justify-center gap-4">
           <li className="flex flex-col items-start w-full">
-            <label className="text-gray-600 font-semibold">Email{email}</label>
+            <label className="text-gray-600 font-semibold">password{email}</label>
             <input
               className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
               type="text"
-              placeholder="Enter your Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </li>
@@ -76,4 +89,4 @@ const ForgotPasswordForm = () => {
 }
 ;
 
-export default ForgotPasswordForm;
+export default Password;
