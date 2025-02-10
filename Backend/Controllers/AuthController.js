@@ -205,7 +205,7 @@ const forgetpass = async (req,res) => {
    try {
       const { email } = req.body;
       const user = await Users.findOne({ email });
-      const resetLink = `https://authapplogin.onrender.com/password?email=${encodeURIComponent(email)}`;
+      const resetLink = `https://authapplogin.onrender.com/reset-password?email=${encodeURIComponent(user.email)}`;
       if (user.email === email) {
          const mailResponse = await otpmailsender(email,resetLink, null, "RESET");
          return res.status(200).json({

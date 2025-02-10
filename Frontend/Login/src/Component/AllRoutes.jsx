@@ -13,7 +13,7 @@ function AllRoutes() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/next" element={<NextComponent />} />
         <Route path="/forget" element={<Forget />} />
-        <Route path="/password" element={<Password />} />
+        <Route path="/reset-password" element={<Password />} />
       </Routes>
     </div>
   )
