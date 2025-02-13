@@ -6,7 +6,7 @@ import { useLocation} from 'react-router-dom';
 
 const Password = () => {
   const [password, setPassword] = useState('')
-  const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -16,9 +16,8 @@ const Password = () => {
 
    // Extract email from query parameters
    useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const emailParam = params.get("email");
-    setEmail(emailParam);
+    const Token = window.location.pathname.split('/').pop();
+    setToken(Token);
   }, [location.search]);
 
 
@@ -30,7 +29,7 @@ const Password = () => {
 
     try {
         const response = await axios.post(ForgetPASS, {
-            email,
+            token,
             password
          });
          if (!response) {
@@ -64,7 +63,7 @@ const Password = () => {
       <form onSubmit={handleResetSubmit} className="animate-slide-up">
         <ul className="flex flex-col flex-wrap items-start justify-center gap-4">
           <li className="flex flex-col items-start w-full">
-            <label className="text-gray-600 font-semibold">password</label>
+            <label className="text-gray-600 font-semibold">password </label>
             <input
               className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
               type="text"

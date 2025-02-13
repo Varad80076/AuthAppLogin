@@ -186,7 +186,7 @@ const resendOTP = async (req, res) => {
          );
       } else {
          // Create a new OTP entry
-         const newOtp = new OTP({ email, otp, time: expirationTime });
+         const newOtp = new OTP({ email, otp, time: expirationTime,token:null });
          await newOtp.save();
       }
       const updatedOtp = await OTP.findOne({ email });
@@ -205,12 +205,29 @@ const forgetpass = async (req,res) => {
    try {
       const { email } = req.body;
       const user = await Users.findOne({ email });
-      const resetLink = `https://authapplogin.onrender.com/reset-password?email=${encodeURIComponent(user.email)}`;
+      if (!user) {
+         return res.status(404).json({ success: false, message: "User not found"});
+      }
+            
+      // Generate JWT token with 20 minutes expiration
+      const jwtToken = jwt.sign(
+         { email: user.email, _id: user._id },
+         process.env.JWT_SECRET,
+         { expiresIn: "20m" } // Token expires in 20 minutes
+      );
+      const resetLink = `http://localhost:5173/reset-password/${jwtToken}`;
+      // const newOtp = new OTP({ email, otp:null, time: null, resetLink });
+      // await OTP.updateOne(
+      //    { email:user.email },
+      //    { $set: { token:resetLink } }
+      // );
+         // await newOtp.save();
       if (user.email === email) {
          const mailResponse = await otpmailsender(email,resetLink, null, "RESET");
          return res.status(200).json({
             success: true,
             message: "Mail send successfully",
+            jwtToken,
             email: user.email,
             name: user.name,
          });
@@ -232,23 +249,31 @@ const resetpass = async (req, res) => {
 
    try {
       
-      const { email,password } = req.body;
-      const user = await Users.findOne({ email });
-      console.log(user.email,email)
+      const { token,password } = req.body;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const { email, _id } = decoded;
+      // const otp = await OTP.findOne({ token });
+      // if (token === otp.token) {
+      //    console.log("token equal aahe re")
+      // }
+      const user = await Users.findOne({ _id });
       const errorMsg = "User Not Found! Please try again."
       if (!user) {
          return res.status(403).json({ message: errorMsg, success: false });
       }
-      let User = new Users({ email:user.email, password }); //import Users Collection in user veriable
-
+      // await OTP.updateOne(
+      //    { email },
+      //    { $set: { token:null } }
+      // );
       // Hash the password
-      User.password = await bcrypt.hash(password, 10);
-      
+      const hashpassword = await bcrypt.hash(password, 10);
       if (user) {
-         // Update the OTP if it already exists
+         // Update the Password if it already exists
+         console.log('Updating password for:', user.email, user._id);
+
          await Users.updateOne(
-            { email },
-            { $set: { password:User.password } }
+            { _id },
+            { $set: { password:hashpassword } }
             
          )
          return res.status(200).json({

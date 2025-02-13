@@ -2,11 +2,11 @@ import { useState } from 'react'
 import axios from "axios";
 import { ForgetID } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
-import { useLocation} from 'react-router-dom';
 
 
 const ForgotPasswordForm = () => {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   // const location = useLocation();
   // const { email} = location.state || {};
   const navigate = useNavigate();
@@ -14,15 +14,17 @@ const ForgotPasswordForm = () => {
     //HANDLE RESET PASSWORD
   const handleResetSubmit = async(event) => { 
     event.preventDefault()
-    
+    setIsLoading(true);
     try {
         const response = await axios.post(ForgetID, {
             email,
             // password
          });
+         
          if (!response) {
             alert(response.data.message);
             navigate("/");
+            setIsLoading(false);
             // throw new Error("Failed reset");
          }
          if (response.data.success) {
@@ -31,11 +33,13 @@ const ForgotPasswordForm = () => {
          } else {
             alert(response.data.message);
             navigate("/");
+            setIsLoading(false);
          }
 
     } catch{
             alert("Please check email again");
             navigate("/")
+            setIsLoading(false);
     }
     }   
     
@@ -64,8 +68,15 @@ const ForgotPasswordForm = () => {
           <button
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
+            disabled={isLoading} // Disable button while loading
           >
-            Send Reset Link
+            {email=="" ?("Send Email"):(isLoading ? (
+                        <>
+                            Sending...
+                        </>
+                    ) : (
+                        "Send Email"
+                    ))}
           </button>
         </ul>
       </form>
