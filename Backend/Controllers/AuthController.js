@@ -216,13 +216,12 @@ const forgetpass = async (req,res) => {
          { expiresIn: "20m" } // Token expires in 20 minutes
       );
       const resetLink = `https://authapplogin.onrender.com/reset-password/${jwtToken}`;
-      // const newOtp = new OTP({ email, otp:null, time: null, resetLink });
-      // await OTP.updateOne(
-      //    { email:user.email },
-      //    { $set: { token:resetLink } }
-      // );
-         // await newOtp.save();
+      
       if (user.email === email) {
+         await OTP.updateOne(
+            { email },
+            { $set: { token:jwtToken } }
+         );
          const mailResponse = await otpmailsender(user.name,email,resetLink, null, "RESET");
          return res.status(200).json({
             success: true,
@@ -232,7 +231,7 @@ const forgetpass = async (req,res) => {
             name: user.name,
          });
       } else {
-         // OTP does not match
+         // Email does not match
          return res
             .status(400)
             .json({ alert: "Invalid Email! Link not found", success: false });
@@ -252,30 +251,28 @@ const resetpass = async (req, res) => {
       const { token,password } = req.body;
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
       const { email, _id } = decoded;
-      // const otp = await OTP.findOne({ token });
-      // if (token === otp.token) {
-      //    console.log("token equal aahe re")
-      // }
+      const otp = await OTP.findOne({ token:token });
+      
       const user = await Users.findOne({ _id });
       const errorMsg = "User Not Found! Please try again."
       if (!user) {
          return res.status(403).json({ message: errorMsg, success: false });
       }
-      // await OTP.updateOne(
-      //    { email },
-      //    { $set: { token:null } }
-      // );
+      
       // Hash the password
       const hashpassword = await bcrypt.hash(password, 10);
-      if (user) {
+      if (user || token === otp.token) {
          // Update the Password if it already exists
-         console.log('Updating password for:', user.email, user._id);
-
+         
          await Users.updateOne(
             { _id },
             { $set: { password:hashpassword } }
             
          )
+         await OTP.updateOne(
+            { email },
+            { $set: { token:null } }
+         );
          return res.status(200).json({
             message: "Password reset successfully",
             success: true,

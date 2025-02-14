@@ -8,22 +8,46 @@ import { Link } from "react-router-dom";
 function SignUp() {
    const [name, setName] = useState("");
    const [email, setEmail] = useState("");
-   const [password, setpassword] = useState("");
-   const [confpassword, setconfpassword] = useState("");
+   const [password, setpassword] = useState(""  );
+   const [confirmPassword, setconfirmPassword] = useState("");
    const [isSignUp, setIsSignUp] = useState(true);
    const [showPassword, setShowPassword] = useState(false);
+   const [message, setMessage] = useState("");
    const navigate = useNavigate();
 
    const toggleForm = () => {
       setIsSignUp(!isSignUp);
    };
 
+   const handlePasswordChange = (e) => {
+      setpassword(e.target.value);
+      if (confirmPassword && e.target.value !== confirmPassword) {
+        setMessage("Passwords do not match");
+      } else if (confirmPassword && e.target.value === confirmPassword) {
+        setMessage("✓ Passwords match!");
+      } else {
+        setMessage("");
+      }
+    };
+  
+    const handleConfirmPasswordChange = (e) => {
+      setconfirmPassword(e.target.value);
+      if (password && password !== e.target.value) {
+        setMessage("Passwords do not match");
+      } else if (password && password === e.target.value) {
+        setMessage("✓ Passwords match!");
+      } else {
+        setMessage("");
+      }
+    };
+
+
    const collectData = async (e) => {
       e.preventDefault();
       if (password.trim().length == 0 || password == "") {
          alert("Password value should be in Integer or Number");
       }
-      if (password.trim() != confpassword.trim()) {
+      if (password.trim() != confirmPassword.trim()) {
          alert("please check password again");
       } else {
          try {
@@ -48,21 +72,21 @@ function SignUp() {
             setName("");
             setEmail("");
             setpassword("");
-            setconfpassword("");
+            confirmPassword("");
          } catch (error) {
             if (error.response && error.response.status === 404) {
                alert("Failed to send message. Please try again later.", error);
                setName("");
                setEmail("");
                setpassword("");
-               setconfpassword("");
+               confirmPassword("");
             }
             else{
                alert("Email is already exists", error);
                setName("");
                setEmail("");
                setpassword("");
-               setconfpassword("");
+               confirmPassword("");
             }
          }
       }
@@ -113,7 +137,7 @@ function SignUp() {
                            name="password"
                            placeholder="Enter your Password"
                            value={password}
-                           onChange={(e) => setpassword(e.target.value)}
+                           onChange={handlePasswordChange}
                         />
                      </li>
                      <li className="flex flex-col items-start w-full">
@@ -125,23 +149,38 @@ function SignUp() {
                            type={showPassword ? "text" : "password"}
                            name="password"
                            placeholder="Enter your Password"
-                           value={confpassword}
-                           onChange={(e) => setconfpassword(e.target.value)}
+                           value={confirmPassword}
+                           onChange={handleConfirmPasswordChange}
                         />
                      </li>
-                     <div className="flex justify-end gap-1 w-full">
-                        <input
-                           type="checkbox"
-                           checked={showPassword}
-                           onChange={() => setShowPassword(!showPassword)}
-                           className="form-checkbox text-blue-500 cursor-pointer "
-                        />
-                        <p
-                           className="cursor-pointer"
-                           onClick={() => setShowPassword(!showPassword)}>
-                           show
-                        </p>
-                     </div>
+                     <div className='flex flex-col  w-full'>
+                    <div className=' justify-start text-sm text-green-500'>
+                        {message && (
+                              <p
+                                className={` justify-center items-center text-xs font-bold ${
+                                  message === "✓ Passwords match!"
+                                    ? "text-green-700"
+                                    : "text-red-400"
+                                }`}
+                              >
+                                {message}
+                              </p>
+                    )}
+                    </div>
+                    <div className="flex justify-end gap-1 w-full">
+                            <input
+                              type="checkbox"
+                              checked={showPassword}
+                              onChange={() => setShowPassword(!showPassword)}
+                              className="form-checkbox text-blue-500 cursor-pointer "
+                            />
+                                  <p
+                                    className="cursor-pointer"
+                                    onClick={() => setShowPassword(!showPassword)}>
+                                    show
+                                  </p>
+                    </div>
+            </div>
                      <button
                         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
                         type="submit">

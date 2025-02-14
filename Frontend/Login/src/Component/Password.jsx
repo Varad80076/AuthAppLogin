@@ -6,7 +6,11 @@ import { useLocation} from 'react-router-dom';
 
 const Password = () => {
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -20,14 +24,39 @@ const Password = () => {
     setToken(Token);
   }, [location.search]);
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (confirmPassword && e.target.value !== confirmPassword) {
+      setMessage("Passwords do not match");
+    } else if (confirmPassword && e.target.value === confirmPassword) {
+      setMessage("✓ Passwords match!");
+    } else {
+      setMessage("");
+    }
+  };
 
-
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    if (password && password !== e.target.value) {
+      setMessage("Passwords do not match");
+    } else if (password && password === e.target.value) {
+      setMessage("✓ Passwords match!");
+    } else {
+      setMessage("");
+    }
+  };
 
     //HANDLE RESET PASSWORD
   const handleResetSubmit = async(event) => { 
     event.preventDefault()
-
+    if (password.trim().length == 0 || password == "") {
+      alert("Password value should be in Integer or Number");
+   }
+   if (password.trim() != confirmPassword.trim()) {
+      alert("please check password again");
+   }else{
     try {
+      setIsLoading(true)
         const response = await axios.post(forgetPASS, {
             token,
             password
@@ -49,36 +78,89 @@ const Password = () => {
             alert("Please check email again");
             navigate("/")
     }
-    }   
+    }}   
     
+    
+   
 
 
   return (
     <div className="w-[350px] h-fit m-5 p-6 justify-center flex flex-col border border-gray-300 shadow-lg bg-gradient-to-br from-gray-200 via-gray-300 to-gray-100 rounded-2xl gap-6 transition-all duration-300 hover:shadow-2xl animate-floating">
    
       <h1 className="text-gray-800 text-3xl font-bold text-center mb-2">
-        Forgot Password
+        Reset Password
       </h1>
-      <h3 className="text-sm text-secondary m-0">Provide the email address associated with your account to recover your password.</h3>
+      <h3 className="text-sm text-secondary m-0">Provide the password to recover your account.</h3>
       <form onSubmit={handleResetSubmit} className="animate-slide-up">
         <ul className="flex flex-col flex-wrap items-start justify-center gap-4">
-          <li className="flex flex-col items-start w-full">
-            <label className="text-gray-600 font-semibold">password </label>
-            <input
-              className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
-              type="text"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </li>
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
-          >
-            Send Reset Link
-          </button>
+            <li className="flex flex-col items-start w-full">
+                  <label className="text-gray-600 font-semibold">
+                      Password
+                  </label>
+                        <input
+                           className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
+                           type={showPassword ? "text" : "password"}
+                           name="password"
+                           placeholder="Enter your Password"
+                           value={password}
+                           onChange={handlePasswordChange}
+                        />
+                     </li>
+            <li className="flex flex-col items-start w-full">
+                  <label className="text-gray-600 font-semibold">
+                      Confirm Password
+                  </label>
+                        <input
+                            className="rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none px-4 py-2 w-full text-gray-700 transition-all duration-200"
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="Enter your Password"
+                            value={confirmPassword}
+                            onChange={handleConfirmPasswordChange}
+                            
+                        />
+            </li>
+            <div className='flex flex-col  w-full'>
+                    <div className=' justify-start text-sm text-green-500'>
+                        {message && (
+                              <p
+                                className={`mt-2 justify-center items-center text-xs font-bold ${
+                                  message === "✓ Passwords match!"
+                                    ? "text-green-500"
+                                    : "text-red-500"
+                                }`}
+                              >
+                                {message}
+                              </p>
+                    )}
+                    </div>
+                    <div className="flex justify-end gap-1 w-full">
+                            <input
+                              type="checkbox"
+                              checked={showPassword}
+                              onChange={() => setShowPassword(!showPassword)}
+                              className="form-checkbox text-blue-500 cursor-pointer "
+                            />
+                                  <p
+                                    className="cursor-pointer"
+                                    onClick={() => setShowPassword(!showPassword)}>
+                                    show
+                                  </p>
+                    </div>
+            </div>
+            <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
+                disabled={isLoading} // Disable button while loading
+            >
+                  {password == ""||confirmPassword == "" ?("Set Password"):(isLoading ? (
+                        <>
+                            Reseting...
+                        </>
+                    ) : (
+                        "Set Password"
+                    ))}
+            </button>
         </ul>
       </form>
     

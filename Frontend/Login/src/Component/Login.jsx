@@ -23,7 +23,7 @@ function Login() {
    //HANDEL LOGIN REQUEST
    const handleLogin = async (e) => {
       e.preventDefault();
-      setIsLoading(true)
+      setIsLoading(true);
       try {
          const response = await axios.post(login, {
             email,
@@ -115,6 +115,7 @@ function Login() {
    //HANDEL RESET OTP REQUEST
    const resetOtp = async (e) => {
       e.preventDefault();
+      setIsLoading(true);
       try {
          const response = await axios.post(resendOtpUrl, { email });
          if (!response) {
@@ -123,7 +124,9 @@ function Login() {
          }
          setTimer(60);
          setOtp('');
+         setIsLoading(false);
          alert("resend otp");
+
       } catch (error) {
          if (error.response && error.response.status === 404) {
             alert("Login Error:", msg.ENDPOINT);
@@ -268,12 +271,27 @@ function Login() {
                      type="Reset"
                      onClick={resetOtp}
                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4">
-                     Reset OTP
+                     disabled={isLoading}
+                     {otp=="" ? (isLoading ? (
+                        <>
+                            Resending...
+                        </>
+                    ) : (
+                        "Reset OTP"
+                    )):("Reset OTP")}
                   </button>
                   <button
                      type="submit"
                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4">
                      Verify OTP
+                     disabled={isLoading}
+                     {otp=="" ?("Verify OTP"):(isLoading ? (
+                        <>
+                            Verifying...
+                        </>
+                    ) : (
+                        "Verify OTP"
+                    ))}
                   </button>
                   <p
                      className={`text-center mt-4 text-red-500  ${

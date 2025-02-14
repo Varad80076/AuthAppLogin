@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // const location = useLocation();
-  // const { email} = location.state || {};
   const navigate = useNavigate();
 
     //HANDLE RESET PASSWORD
