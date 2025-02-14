@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
- async  function otpmailsender(email,link, otp, emailType) {
+ async  function otpmailsender(name,email,link, otp, emailType) {
   try {
     var transport = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -18,22 +18,29 @@ require('dotenv').config();
       to: email,
       subject: emailType === "VERIFY" ? "OTP Verification" : "Reset Your Password",
       html:emailType === "VERIFY"
-          ? `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-              <h2>Verify Your Email</h2>
-              <p>Hello,</p>
-              <p>Please verify your email address using the OTP below it is valied for 5min </p>
-              <h3 style="color: #4CAF50;">${otp}</h3>
-              <p>If you didn’t request this, you can safely ignore this email.</p>
+          ? `<div style="font-family: Arial, sans-serif; line-height: 1.5;">
+              <h2>Verify Your Email Address</h2>
+                <p>Dear ${name},</p>
+                  <p>Your One-Time Password (OTP) for email verification is:</p>
+                    <h3 style="color: #4CAF50;">${otp}</h3>
+                      <p>This code is valid for 10 minutes. Please enter the code to verify your email address.</p>
+                    <p>If you didn’t request this, you can safely ignore this email.</p>
+                  <p>Best regards,</p>
+                <p>Varad Badgujar</p>
             </div>`
-          : `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          : `<div style="font-family: Arial, sans-serif; line-height: 1.5;">
               <h2>Reset Your Password</h2>
-              <p>Hello,</p>
-              <p>Please reset your password using This Link below:</p>
-              <a href="${link}" 
-     style="color: #4CAF50; text-decoration: none; font-weight: bold;">
-     Reset Password
-  </a>
-              <p>If you didn’t request this, you can safely ignore this email.</p>
+                  <p>Dear ${name},</p>
+                      <p>We received a request to reset your password. Click the link below to reset it:</p>
+                          <a href="${link}" 
+                              style="color: #4CAF50; text-decoration: none; font-weight: bold;">
+                                  Reset Password
+                          </a>
+                      <p>If you didn’t request a password reset, please ignore this email or contact our support team.
+                        This link is valid for 20 min.</p>
+                  <p>Best regards,</p>
+                  <p>Varad Badgujar</p>
+                  <p>If you didn’t request this, you can safely ignore this email.</p>
             </div>`,
     };
 

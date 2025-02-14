@@ -88,7 +88,7 @@ const login = async (req, res) => {
 
       const updatedOtp = await OTP.findOne({ email });
 
-      const mailResponse = await otpmailsender(user.email,null, otp, "VERIFY");
+      const mailResponse = await otpmailsender(user.name,user.email,null, otp, "VERIFY");
 
       //sending response in console box to user in json format
 
@@ -190,7 +190,7 @@ const resendOTP = async (req, res) => {
          await newOtp.save();
       }
       const updatedOtp = await OTP.findOne({ email });
-      const mailResponse = await otpmailsender(updatedOtp.email,null, otp, "VERIFY");
+      const mailResponse = await otpmailsender(updatedOtp.name,updatedOtp.email,null, otp, "VERIFY");
       return res.status(200).json({
          message: "Resend Otp success",
          success: true,
@@ -215,7 +215,7 @@ const forgetpass = async (req,res) => {
          process.env.JWT_SECRET,
          { expiresIn: "20m" } // Token expires in 20 minutes
       );
-      const resetLink = `http://localhost:5173/reset-password/${jwtToken}`;
+      const resetLink = `https://authapplogin.onrender.com/reset-password/${jwtToken}`;
       // const newOtp = new OTP({ email, otp:null, time: null, resetLink });
       // await OTP.updateOne(
       //    { email:user.email },
@@ -223,7 +223,7 @@ const forgetpass = async (req,res) => {
       // );
          // await newOtp.save();
       if (user.email === email) {
-         const mailResponse = await otpmailsender(email,resetLink, null, "RESET");
+         const mailResponse = await otpmailsender(user.name,email,resetLink, null, "RESET");
          return res.status(200).json({
             success: true,
             message: "Mail send successfully",
