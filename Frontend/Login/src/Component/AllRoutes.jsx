@@ -10,6 +10,7 @@ function AllRoutes() {
     <div className='flex flex-col items-center justify-center h-fit gap-10 w-full min-h-screen bg-gradient-to-br from-blue-200 to-blue-400 '> 
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/next" element={<NextComponent />} />
         <Route path="/forget" element={<Forget />} />
