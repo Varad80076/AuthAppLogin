@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import axios from "axios";
-import { ForgetID } from "../util/allAPIs.js";
+import { forgetID } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 
 
@@ -16,7 +16,7 @@ const ForgotPasswordForm = () => {
     event.preventDefault()
     setIsLoading(true);
     try {
-        const response = await axios.post(ForgetID, {
+        const response = await axios.post(forgetID, {
             email,
             // password
          });

@@ -18,9 +18,9 @@ require('dotenv').config();
       to: email,
       subject: emailType === "VERIFY" ? "OTP Verification" : "Reset Your Password",
       html:emailType === "VERIFY"
-          ? `<div style="font-family: Arial, sans-serif; line-height: 1.5;">
+          ? `<div style="font-family: Arial, sans-serif; line-height: 1.4;">
               <h2>Verify Your Email Address</h2>
-                <p>Dear ${name},</p>
+                <h4>Dear ${name},</h4>
                   <p>Your One-Time Password (OTP) for email verification is:</p>
                     <h3 style="color: #4CAF50;">${otp}</h3>
                       <p>This code is valid for 10 minutes. Please enter the code to verify your email address.</p>
@@ -28,9 +28,9 @@ require('dotenv').config();
                   <p>Best regards,</p>
                 <p>Varad Badgujar</p>
             </div>`
-          : `<div style="font-family: Arial, sans-serif; line-height: 1.5;">
+          : `<div style="font-family: Arial, sans-serif; line-height: 1.4;">
               <h2>Reset Your Password</h2>
-                  <p>Dear ${name},</p>
+                  <h4>Dear ${name},</h4>
                       <p>We received a request to reset your password. Click the link below to reset it:</p>
                           <a href="${link}" 
                               style="color: #4CAF50; text-decoration: none; font-weight: bold;">

@@ -1,6 +1,6 @@
 import { useState,useEffect } from 'react'
 import axios from "axios";
-import { ForgetPASS } from "../util/allAPIs.js";
+import { forgetPASS } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 import { useLocation} from 'react-router-dom';
 
@@ -28,7 +28,7 @@ const Password = () => {
     event.preventDefault()
 
     try {
-        const response = await axios.post(ForgetPASS, {
+        const response = await axios.post(forgetPASS, {
             token,
             password
          });
