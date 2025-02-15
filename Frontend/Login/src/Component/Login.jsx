@@ -34,7 +34,7 @@ function Login() {
             alert("failed to login");
             throw new Error("Failed to Login");
          }
-         setTimer(60); // 1 minutes in seconds
+         setTimer(60); // 2 minutes in seconds
          setMessage("OTP sent successfully");
          setTimeout(() => {
             setMessage(""); // Clear the message after 3 seconds
@@ -286,13 +286,13 @@ function Login() {
                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4"
                      disabled={isLoading}
                   >
-                     {otp=="" ?("Verify OTP"):(isLoading ? (
+                     {otp=="" ?("Verify OTP"):(onclick=()=>(isLoading ? (
                         <>
                             Verifying...
                         </>
                     ) : (
                         "Verify OTP"
-                    ))}
+                    )))}
                   </button>
                   <p
                      className={`text-center mt-4 text-green-700  ${
