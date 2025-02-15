@@ -270,8 +270,9 @@ function Login() {
                   <button
                      type="Reset"
                      onClick={resetOtp}
-                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4">
+                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4"
                      disabled={isLoading}
+                  >
                      {otp=="" ? (isLoading ? (
                         <>
                             Resending...
@@ -282,9 +283,9 @@ function Login() {
                   </button>
                   <button
                      type="submit"
-                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4">
-                     Verify OTP
+                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4"
                      disabled={isLoading}
+                  >
                      {otp=="" ?("Verify OTP"):(isLoading ? (
                         <>
                             Verifying...
