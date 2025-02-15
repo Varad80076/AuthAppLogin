@@ -68,6 +68,19 @@ function Login() {
 
       window.addEventListener("popstate", handlePopState);
 
+      // Save the current page in localStorage **(Added this block)**
+      if (isOtpSent) {
+         localStorage.setItem("currentPage", "otpVerification");
+      } else {
+         localStorage.removeItem("currentPage");
+      }
+
+      // Check and navigate to OTP page if state is saved **(Added this block)**
+      const currentPage = localStorage.getItem("currentPage");
+      if (currentPage === "otpVerification" && !isOtpSent) {
+         setIsOtpSent(true);
+      }
+
       if (Message) {
          setMessage(Message); // Set the initial message
          setTimeout(() => {
@@ -79,7 +92,7 @@ function Login() {
       return () => {
          window.removeEventListener("popstate", handlePopState);
       };
-   }, [navigate,Message]);
+   }, [navigate,Message,isOtpSent]);
 
    
 
