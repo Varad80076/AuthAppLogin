@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import msg from "../messages/AllMessages";
 import { Link } from "react-router-dom";
 import { useLocation} from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Login() {
    const [email, setEmail] = useState("");
@@ -14,12 +15,13 @@ function Login() {
    const [isOtpSent, setIsOtpSent] = useState(false);
    const [otp, setOtp] = useState("");
    const [timer, setTimer] = useState(0);
-   const [message, setMessage] = useState("");
    const [isLoading, setIsLoading] = useState(false);
    const location = useLocation();
    const { Message} = location.state || {};
 
    
+   
+
    //HANDEL LOGIN REQUEST
    const handleLogin = async (e) => {
       e.preventDefault();
@@ -31,27 +33,24 @@ function Login() {
          });
 
          if (!response) {
-            alert("failed to login");
+            toast.error("failed to login");
             throw new Error("Failed to Login");
          }
          setTimer(60); // 2 minutes in seconds
-         setMessage("OTP sent successfully");
-         setTimeout(() => {
-            setMessage(""); // Clear the message after 3 seconds
-            setIsLoading(false)
-         }, 3000);
+         toast.success("OTP sent successfully");
+         setIsLoading(false)
          startTimer();
          setIsOtpSent(true);
          setEmail(response.data.email);
          setPassword("");
       } catch (error) {
          if (error.response && error.response.status === 404) {
-            alert("check email and password again ");
+            toast.warn("check email and password again ");
             setEmail("")
             setPassword("");
             setIsLoading(false);
          } else {
-            alert("check email and password again");
+            toast.warn("check email and password again");
             setEmail("")
             setPassword("");
             setIsLoading(false);
@@ -69,10 +68,7 @@ function Login() {
       window.addEventListener("popstate", handlePopState);
 
       if (Message) {
-         setMessage(Message); // Set the initial message
-         setTimeout(() => {
-            setMessage(""); // Clear the message after 3 seconds
-         }, 2000);
+         toast(Message); // Set the initial message
          navigate({state: null });
       }
 
@@ -86,28 +82,28 @@ function Login() {
    //HANDEL OTP VERIFICATION REQUEST
    const handleOtpVerification = async (e) => {
       e.preventDefault();
-      
+      console.log(email,otp)
       try {
          const response = await axios.post(verifyOtp, { email, otp });
-         if (response.data.success) {
+         if (response.data.success ) {
             navigate("/next", {
-               state: { email: response.data.email, name: response.data.name,message },
+               state: { email: response.data.email, name: response.data.name},
             });
+            toast.success("Login Successfully!")
          } else {
-            alert("Invalid OTP. Please try again.");
+            toast.warn("Invalid OTP. Please try again.");
          }
 
-         if (response.data.success) {
-            alert(response.data.alert);
-
-         } else {
-            alert("Invalid OTP. Please try again.");
+         if (!response.data.success) {
+            toast.error("Invalid OTP. Please try again.");
          }
          setOtp("");
       } catch (error) {
-         alert("Failed to verify OTP.", error);
-         setIsOtpSent(false);
-         setEmail("");
+         const errorMessage =
+         error.response?.data?.message || "Failed to verify OTP. Please try again.";
+         toast.warn(errorMessage);
+         console.log(email)
+         setIsOtpSent(true);
          setOtp("");
       }
    };
@@ -119,20 +115,20 @@ function Login() {
       try {
          const response = await axios.post(resendOtpUrl, { email });
          if (!response) {
-            alert("failed to login");
+            toast.error("failed to login");
             throw new Error("Failed to Login");
          }
          setTimer(60);
          setOtp('');
          setIsLoading(false);
-         alert("resend otp");
+         toast.success("Otp reset! Check your mail.");
 
       } catch (error) {
          if (error.response && error.response.status === 404) {
-            alert("Login Error:", msg.ENDPOINT);
+            toast.error("Login Error:", msg.ENDPOINT);
             setOtp('');
          } else {
-            alert("Login Error:", msg.CHECK_CREDENTIALS);
+            toast.error("Login Error:", msg.CHECK_CREDENTIALS);
             setOtp('');
          }
       }
@@ -147,18 +143,21 @@ function Login() {
 
     //HANDEL TIMER FOR OTP VERIFICATION
    const startTimer = () => {
+      let isToastShown = false; 
       const interval = setInterval(() => {
          setTimer((prev) => {
             if (prev <= 1) {
                clearInterval(interval);
+               if (!isToastShown) {
+                  toast("OTP expired. Please login again.");
+                  isToastShown = true; // Mark toast as shown
+               }
                setIsOtpSent(false);
                setPassword("");
                setEmail("");
-               setMessage("OTP expired. Please login again.");
-               setTimeout(() => {
-                  setMessage(""); // Clear the message after 3 seconds
-               }, 3000);
+
                return 0;
+               
             }
             return prev - 1;
          });
@@ -245,12 +244,6 @@ function Login() {
                      </span>
                   </ul>
                </form>
-               <p
-                  className={`text-center mt-4 text-green-700 ${
-                     message ? "block" : "hidden"
-                  }`}>
-                  {message}
-               </p>
             </>
          ) : (
             //OTP Verification Form 
@@ -273,20 +266,13 @@ function Login() {
                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4"
                      disabled={isLoading}
                   >
-                    {onclick=()=>(otp=="" ?((isLoading ? (
-                        <>
-                            Resending...
-                        </>
-                    ) : (
-                        "Reset OTP"
-                    ))):((isLoading ? (
+                    {isLoading ? (
                      <>
                          Resending...
                      </>
                  ) : (
                      "Reset OTP"
-                 ))))} 
-                 Reset OTP
+                 )} 
                   </button>
                   <button
                      type="submit"
@@ -301,12 +287,6 @@ function Login() {
                         "Verify OTP"
                     ))}
                   </button>
-                  <p
-                     className={`text-center mt-4 text-green-700  ${
-                        message ? "block" : "hidden"
-                     }`}>
-                     {message}
-                  </p>
                </form>
             </>
          )}

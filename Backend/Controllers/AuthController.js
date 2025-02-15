@@ -10,14 +10,25 @@ const signup = async (req, res) => {
    console.log("Server is Running");
    try {
       const { name, email, password } = req.body; // Destructure from req.body
+      // Check if user exists by email
+    const existingEmail = await Users.findOne({ email });
+    if (existingEmail) {
+      return res.status(409).json({
+        message: "Email already exists",
+        success: false,
+      });
+    }
 
-      // Check if user exists
-      const existingUser = await Users.findOne({ email });
-      if (existingUser) {
-         return res
-            .status(409)
-            .json({ message: "Email is already exists", success: false});
-      }
+
+      // Check if user exists by name
+    const existingName = await Users.findOne({ name });
+    if (existingName) {
+      return res.status(409).json({
+        message: "Username already exists",
+        success: false,
+      });
+    }
+      
       let user = new Users({ name, email, password }); //import Users Collection in user veriable
 
       // Hash the password
@@ -25,12 +36,14 @@ const signup = async (req, res) => {
 
       //save in database using user veriable
       let result = await user.save();
-
+      console.log(result);
+      
       //send response to Client in console
       return res.status(201).json({
          message: "User created successfully",
          success: true,
       });
+   
    } catch (error) {
       return res.status(500).json({
          message: "Failed to save data",
@@ -114,7 +127,7 @@ const verifyOtp = async (req, res) => {
 
    try {
       const { email, otp} = req.body;
-   
+      console.log(email,otp)
       const user = await Users.findOne({ email });
       const existing = await OTP.findOne({ email });
 
@@ -139,18 +152,13 @@ const verifyOtp = async (req, res) => {
 
          return res.status(200).json({
             success: true,
-            alert: "OTP verified successfully",
+            message: "OTP verified successfully",
             email: user.email,
             name: user.name,
          });
 
       } else {
          // OTP does not match
-         existing.otp = null;
-         existing.time = 0;
-         existing.markModified("otp");
-         existing.markModified("time");
-            await existing.save();
          return res
             .status(400)
             .json({ alert: "Invalid OTP! OTP not found", success: false });
@@ -213,9 +221,9 @@ const forgetpass = async (req,res) => {
       const jwtToken = jwt.sign(
          { email: user.email, _id: user._id },
          process.env.JWT_SECRET,
-         { expiresIn: "20m" } // Token expires in 20 minutes
+         { expiresIn: "10m" } // Token expires in 20 minutes
       );
-      const resetLink = `https://authapplogin.onrender.com/reset-password/${jwtToken}`;
+      const resetLink = `http://localhost:5173/reset-password/${jwtToken}`;
       
       if (user.email === email) {
          await OTP.updateOne(
@@ -255,7 +263,7 @@ const resetpass = async (req, res) => {
       
       const user = await Users.findOne({ _id });
       const errorMsg = "User Not Found! Please try again."
-      if (!user) {
+      if (!user || password=="") {
          return res.status(403).json({ message: errorMsg, success: false });
       }
       

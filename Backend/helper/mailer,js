@@ -37,7 +37,7 @@ require('dotenv').config();
                                   Reset Password
                           </a>
                       <p>If you didn’t request a password reset, please ignore this email or contact our support team.
-                        This link is valid for 20 min.</p>
+                        This link is valid for 10 min.</p>
                   <p>Best regards,</p>
                   <p>Varad Badgujar</p>
                   <p>If you didn’t request this, you can safely ignore this email.</p>

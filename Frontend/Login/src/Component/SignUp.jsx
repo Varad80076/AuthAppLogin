@@ -13,6 +13,7 @@ function SignUp() {
    const [isSignUp, setIsSignUp] = useState(true);
    const [showPassword, setShowPassword] = useState(false);
    const [message, setMessage] = useState("");
+   const [notification, setNotification] = useState("");
    const navigate = useNavigate();
 
    const toggleForm = () => {
@@ -41,14 +42,20 @@ function SignUp() {
       }
     };
 
+    const Notification = (n) => {
+      setNotification(n);
+      setTimeout(() => {
+         setNotification(""); // Clear the message after 3 seconds
+       }, 3000);
+    }
 
    const collectData = async (e) => {
       e.preventDefault();
       if (password.trim().length == 0 || password == "") {
-         alert("Password value should be in Integer or Number");
+         Notification("Password value should be in Integer or Number");
       }
       if (password.trim() != confirmPassword.trim()) {
-         alert("please check password again");
+         Notification("please check password again");
       } else {
          try {
             const response = await axios.post(signup, {
@@ -59,35 +66,41 @@ function SignUp() {
 
             if (response.status === 201) {
                // Handle successful signup (e.g., redirect, show success message)
-               alert(response.data.message)
-               navigate("/");
+               Notification(response.data.message)
+               navigate("/",{
+                  state: { Message:response.data.message },
+               });
             } else if (response.status === 409) {
                // Handle 409 Conflict (email already exists)
-               alert(response.data.message);
+               Notification(response.data.message);
             } else {
                // Handle other errors
-               alert(response.data.message);
+               Notification(response.data.message);
             }
 
             setName("");
             setEmail("");
             setpassword("");
-            confirmPassword("");
+            setconfirmPassword("");
+            setMessage("");
          } catch (error) {
             if (error.response && error.response.status === 404) {
-               alert("Failed to send message. Please try again later.", error);
+               Notification("Failed to send message. Please try again later.", error);
                setName("");
                setEmail("");
                setpassword("");
-               confirmPassword("");
+               setconfirmPassword("");
+               setMessage("");
             }
             else{
-               alert("Email is already exists", error);
+               Notification(error.response.data.message);
                setName("");
                setEmail("");
                setpassword("");
-               confirmPassword("");
+               setconfirmPassword("");
+               setMessage("");
             }
+            
          }
       }
    };
@@ -196,6 +209,12 @@ function SignUp() {
                            Login
                         </Link>
                      </span>
+                           <p
+                              className={`text-center mt-4 w-full text-red-700 ${notification ? "block" : "hidden"}`}
+                           >
+                              {notification}
+                           </p>
+
                   </ul>
                </form>
             </div>

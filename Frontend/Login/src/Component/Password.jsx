@@ -3,20 +3,20 @@ import axios from "axios";
 import { forgetPASS } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 import { useLocation} from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Password = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  
-  
+  const [checkpass, setCheckpass] = useState("");
 
 
+  
 
    // Extract email from query parameters
    useEffect(() => {
@@ -27,22 +27,22 @@ const Password = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     if (confirmPassword && e.target.value !== confirmPassword) {
-      setMessage("Passwords do not match");
+      setCheckpass("Passwords do not match");
     } else if (confirmPassword && e.target.value === confirmPassword) {
-      setMessage("✓ Passwords match!");
+      setCheckpass("✓ Passwords match!");
     } else {
-      setMessage("");
+      setCheckpass("");
     }
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
     if (password && password !== e.target.value) {
-      setMessage("Passwords do not match");
+      setCheckpass("Passwords do not match");
     } else if (password && password === e.target.value) {
-      setMessage("✓ Passwords match!");
+      setCheckpass("✓ Passwords match!");
     } else {
-      setMessage("");
+      setCheckpass("");
     }
   };
 
@@ -50,10 +50,10 @@ const Password = () => {
   const handleResetSubmit = async(event) => { 
     event.preventDefault()
     if (password.trim().length == 0 || password == "") {
-      alert("Password value should be in Integer or Number");
+      toast.warn("Password value should be in Integer or Number");
    }
    if (password.trim() != confirmPassword.trim()) {
-      alert("please check password again");
+    toast.warn("please check password again");
    }else{
     try {
       setIsLoading(true)
@@ -62,21 +62,24 @@ const Password = () => {
             password
          });
          if (!response) {
-            alert(response.data.message);
+          toast.error(response.data.message);
             navigate("/");
             // throw new Error("Failed reset");
          }
          if (response.data.success) {
-            navigate("/",
-            {state: { Message: response.data.message}});
+            navigate("/");
+            toast.success(response.data.message);
          } else {
-            alert(response.data.message);
+          toast.error(response.data.message);
             navigate("/");
          }
 
     } catch{
-            alert("Please check email again");
-            navigate("/")
+      toast.error("Failed to reset password");
+      setConfirmPassword("");
+      setPassword("");
+      setIsLoading(false);
+      
     }
     }}   
     
@@ -122,15 +125,15 @@ const Password = () => {
             </li>
             <div className='flex flex-col  w-full'>
                     <div className=' justify-start text-sm text-green-500'>
-                        {message && (
+                        {checkpass && (
                               <p
                                 className={`mt-2 justify-center items-center text-xs font-bold ${
-                                  message === "✓ Passwords match!"
-                                    ? "text-green-500"
-                                    : "text-red-500"
+                                  checkpass === "✓ Passwords match!"
+                                    ? "text-green-700"
+                                    : "text-red-700"
                                 }`}
                               >
-                                {message}
+                                {checkpass}
                               </p>
                     )}
                     </div>

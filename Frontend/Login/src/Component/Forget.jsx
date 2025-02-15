@@ -2,13 +2,14 @@ import { useState } from 'react'
 import axios from "axios";
 import { forgetID } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from 'react-toastify';
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  
     //HANDLE RESET PASSWORD
   const handleResetSubmit = async(event) => { 
     event.preventDefault()
@@ -20,23 +21,22 @@ const ForgotPasswordForm = () => {
          });
          
          if (!response) {
-            alert(response.data.message);
+          toast.error(response.data.message);
             navigate("/");
             setIsLoading(false);
             // throw new Error("Failed reset");
          }
          if (response.data.success) {
-            navigate("/",
-              {state: { Message: response.data.message}});
+            navigate("/");
+            toast.success(response.data.message);
          } else {
-            alert(response.data.message);
+          toast.success(response.data.message);
             navigate("/");
             setIsLoading(false);
          }
 
     } catch{
-            alert("Please check email again");
-            navigate("/")
+      toast.error("Please check email again");
             setIsLoading(false);
     }
     }   
@@ -44,6 +44,7 @@ const ForgotPasswordForm = () => {
 
 
   return (
+    
     <div className="w-[350px] h-fit m-5 p-6 justify-center flex flex-col border border-gray-300 shadow-lg bg-gradient-to-br from-gray-200 via-gray-300 to-gray-100 rounded-2xl gap-6 transition-all duration-300 hover:shadow-2xl animate-floating">
    
       <h1 className="text-gray-800 text-3xl font-bold text-center mb-2">
@@ -77,6 +78,7 @@ const ForgotPasswordForm = () => {
                     ))}
           </button>
         </ul>
+
       </form>
     
 </div>
