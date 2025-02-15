@@ -286,6 +286,7 @@ function Login() {
                  ) : (
                      "Reset OTP"
                  ))))} 
+                 Reset OTP
                   </button>
                   <button
                      type="submit"
