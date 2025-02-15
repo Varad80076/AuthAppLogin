@@ -68,19 +68,6 @@ function Login() {
 
       window.addEventListener("popstate", handlePopState);
 
-      // Save the current page in localStorage **(Added this block)**
-      if (isOtpSent) {
-         localStorage.setItem("currentPage", "otpVerification");
-      } else {
-         localStorage.removeItem("currentPage");
-      }
-
-      // Check and navigate to OTP page if state is saved **(Added this block)**
-      const currentPage = localStorage.getItem("currentPage");
-      if (currentPage === "otpVerification" && !isOtpSent) {
-         setIsOtpSent(true);
-      }
-
       if (Message) {
          setMessage(Message); // Set the initial message
          setTimeout(() => {
@@ -92,7 +79,7 @@ function Login() {
       return () => {
          window.removeEventListener("popstate", handlePopState);
       };
-   }, [navigate,Message,isOtpSent]);
+   }, [navigate,Message]);
 
    
 
@@ -286,20 +273,26 @@ function Login() {
                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4"
                      disabled={isLoading}
                   >
-                     {otp=="" ?("Reset OTP"):(isLoading ? (
+                    {onclick=()=>(otp=="" ?((isLoading ? (
                         <>
                             Resending...
                         </>
                     ) : (
                         "Reset OTP"
-                    ))}
+                    ))):((isLoading ? (
+                     <>
+                         Resending...
+                     </>
+                 ) : (
+                     "Reset OTP"
+                 ))))} 
                   </button>
                   <button
                      type="submit"
                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4"
                      disabled={isLoading}
                   >
-                    {onclick=()=>(isLoading ? (
+                     {otp=="" ?("Verify OTP"):(isLoading ? (
                         <>
                             Verifying...
                         </>
