@@ -246,7 +246,7 @@ function Login() {
                   </ul>
                </form>
                <p
-                  className={`text-center mt-4 text-red-500 ${
+                  className={`text-center mt-4 text-green-700 ${
                      message ? "block" : "hidden"
                   }`}>
                   {message}
@@ -273,13 +273,13 @@ function Login() {
                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md w-full shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1 mt-4"
                      disabled={isLoading}
                   >
-                     {otp=="" ? (isLoading ? (
+                     {otp=="" ?("Reset OTP"):(isLoading ? (
                         <>
                             Resending...
                         </>
                     ) : (
                         "Reset OTP"
-                    )):("Reset OTP")}
+                    ))}
                   </button>
                   <button
                      type="submit"
@@ -295,7 +295,7 @@ function Login() {
                     ))}
                   </button>
                   <p
-                     className={`text-center mt-4 text-red-500  ${
+                     className={`text-center mt-4 text-green-700  ${
                         message ? "block" : "hidden"
                      }`}>
                      {message}
