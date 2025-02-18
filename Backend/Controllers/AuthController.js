@@ -223,7 +223,7 @@ const forgetpass = async (req,res) => {
          process.env.JWT_SECRET,
          { expiresIn: "10m" } // Token expires in 20 minutes
       );
-      const resetLink = `http://localhost:5173/reset-password/${jwtToken}`;
+      const resetLink = `https://authapplogin.onrender.com/reset-password/${jwtToken}`;
       
       if (user.email === email) {
          await OTP.updateOne(
