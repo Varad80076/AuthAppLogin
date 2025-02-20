@@ -36,7 +36,6 @@ const signup = async (req, res) => {
 
       //save in database using user veriable
       let result = await user.save();
-      console.log(result);
       
       //send response to Client in console
       return res.status(201).json({
@@ -74,7 +73,7 @@ const login = async (req, res) => {
       const jwtToken = jwt.sign(
          { email: user.email, _id: user._id },
          process.env.JWT_SECRET,
-         { expiresIn: "24h" }
+         { expiresIn: "2m" }
       );
 
       //Generating the Otp for the Otp verification
@@ -93,6 +92,10 @@ const login = async (req, res) => {
             { email },
             { $set: { otp, time: expirationTime } }
          );
+         await OTP.updateOne(
+            { email },
+            { $set: { token:jwtToken } }
+         );
       } else {
          // Create a new OTP entry
          const newOtp = new OTP({ email, otp, time: expirationTime });
@@ -101,7 +104,7 @@ const login = async (req, res) => {
 
       const updatedOtp = await OTP.findOne({ email });
 
-      const mailResponse = await otpmailsender(user.name,user.email,null, otp, "VERIFY");
+      await otpmailsender(user.name,user.email,null, otp, "VERIFY");
 
       //sending response in console box to user in json format
 
@@ -124,10 +127,10 @@ const login = async (req, res) => {
 //OTP VERIFICATION CODE
 const verifyOtp = async (req, res) => {
    console.log("running otp verification");
-
    try {
-      const { email, otp} = req.body;
-      console.log(email,otp)
+      const { token, otp} = req.body;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const { email, _id } = decoded;
       const user = await Users.findOne({ email });
       const existing = await OTP.findOne({ email });
 
@@ -135,12 +138,14 @@ const verifyOtp = async (req, res) => {
          return res.status(403).json({ success: false, alert: "Invalid OTP" });
       }
 
-      if (existing.otp === otp) {
+      if (existing.otp === otp && existing.token === token) {
          // OTP matches
          existing.otp = null;
          existing.time = 0;
+         existing.token = null;
          existing.markModified("otp");
          existing.markModified("time");
+         existing.markModified("token");
          await existing.save();
 
          if (!user) {
@@ -198,7 +203,7 @@ const resendOTP = async (req, res) => {
          await newOtp.save();
       }
       const updatedOtp = await OTP.findOne({ email });
-      const mailResponse = await otpmailsender(updatedOtp.name,updatedOtp.email,null, otp, "VERIFY");
+      await otpmailsender(updatedOtp.name,updatedOtp.email,null, otp, "VERIFY");
       return res.status(200).json({
          message: "Resend Otp success",
          success: true,
@@ -217,11 +222,11 @@ const forgetpass = async (req,res) => {
          return res.status(404).json({ success: false, message: "User not found"});
       }
             
-      // Generate JWT token with 20 minutes expiration
+      // Generate JWT token with 10 minutes expiration
       const jwtToken = jwt.sign(
          { email: user.email, _id: user._id },
          process.env.JWT_SECRET,
-         { expiresIn: "10m" } // Token expires in 20 minutes
+         { expiresIn: "10m" } // Token expires in 10 minutes
       );
       const resetLink = `https://authapplogin.onrender.com/reset-password/${jwtToken}`;
       

@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Login from "../Component/Login";
 import { signup } from "../util/allAPIs.js";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignUp() {
    const [name, setName] = useState("");
    const [email, setEmail] = useState("");
-   const [password, setpassword] = useState(""  );
+   const [password, setPassword] = useState("");
    const [confirmPassword, setconfirmPassword] = useState("");
    const [isSignUp, setIsSignUp] = useState(true);
    const [showPassword, setShowPassword] = useState(false);
    const [message, setMessage] = useState("");
-   const [notification, setNotification] = useState("");
    const navigate = useNavigate();
 
    const toggleForm = () => {
@@ -21,7 +21,7 @@ function SignUp() {
    };
 
    const handlePasswordChange = (e) => {
-      setpassword(e.target.value);
+      setPassword(e.target.value);
       if (confirmPassword && e.target.value !== confirmPassword) {
         setMessage("Passwords do not match");
       } else if (confirmPassword && e.target.value === confirmPassword) {
@@ -42,20 +42,17 @@ function SignUp() {
       }
     };
 
-    const Notification = (n) => {
-      setNotification(n);
-      setTimeout(() => {
-         setNotification(""); // Clear the message after 3 seconds
-       }, 3000);
-    }
+   //  useEffect(() => {
+   //      localStorage.setItem('email', email);
+   //    }, [email]);
 
    const collectData = async (e) => {
       e.preventDefault();
       if (password.trim().length == 0 || password == "") {
-         Notification("Password value should be in Integer or Number");
+         toast.warn("Password value should be in Integer or Number");
       }
       if (password.trim() != confirmPassword.trim()) {
-         Notification("please check password again");
+         toast.warn("please check password again");
       } else {
          try {
             const response = await axios.post(signup, {
@@ -63,40 +60,39 @@ function SignUp() {
                email,
                password,
             });
+            
 
             if (response.status === 201) {
                // Handle successful signup (e.g., redirect, show success message)
-               Notification(response.data.message)
-               navigate("/",{
-                  state: { Message:response.data.message },
-               });
+               toast.success(response.data.message)
+               navigate("/");
             } else if (response.status === 409) {
                // Handle 409 Conflict (email already exists)
-               Notification(response.data.message);
+               toast.error(response.data.message);
             } else {
                // Handle other errors
-               Notification(response.data.message);
+               toast.error(response.data.message);
             }
 
             setName("");
             setEmail("");
-            setpassword("");
+            setPassword("");
             setconfirmPassword("");
             setMessage("");
          } catch (error) {
             if (error.response && error.response.status === 404) {
-               Notification("Failed to send message. Please try again later.", error);
+               toast.error("Failed to send message. Please try again later.", error);
                setName("");
                setEmail("");
-               setpassword("");
+               setPassword("");
                setconfirmPassword("");
                setMessage("");
             }
             else{
-               Notification(error.response.data.message);
+               toast.error(error.response.data.message);
                setName("");
                setEmail("");
-               setpassword("");
+               setPassword("");
                setconfirmPassword("");
                setMessage("");
             }
@@ -209,12 +205,7 @@ function SignUp() {
                            Login
                         </Link>
                      </span>
-                           <p
-                              className={`text-center mt-4 w-full text-red-700 ${notification ? "block" : "hidden"}`}
-                           >
-                              {notification}
-                           </p>
-
+                           
                   </ul>
                </form>
             </div>

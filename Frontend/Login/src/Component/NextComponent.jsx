@@ -1,23 +1,37 @@
-import { useLocation, useNavigate, useEffect } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useState,useEffect } from "react";
 
 const NextComponent = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const email = location.state?.email || localStorage.getItem("email");
-  const name = location.state?.name || localStorage.getItem("name");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
+  const [name, setName] = useState(localStorage.getItem("name") || "");
 
   useEffect(() => {
     if (location.state) {
       localStorage.setItem("email", location.state.email);
       localStorage.setItem("name", location.state.name);
+      setEmail(location.state.email);
+      setName(location.state.name);
+    } else {
+      const storedEmail = localStorage.getItem("email");
+      const storedName = localStorage.getItem("name");
+      if (storedEmail && storedName) {
+        setEmail(storedEmail);
+        setName(storedName);
+      } else {
+        navigate("/");
+      }
     }
-  }, [location.state]);
+  }, [location.state, navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("name");
+    setEmail('');
+    setName('');
     navigate("/");
     toast.success("Logout Successfully!");
   };

@@ -4,6 +4,8 @@ import { forgetPASS } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 import { useLocation} from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const Password = () => {
   const [password, setPassword] = useState('')
@@ -83,16 +85,22 @@ const Password = () => {
     }
     }}   
     
-    
+    const handleBack = () => {
+      navigate("/");
+      setIsLoading(false);
+      localStorage.removeItem('email');
+    }
    
 
 
   return (
     <div className="w-[350px] h-fit m-5 p-6 justify-center flex flex-col border border-gray-300 shadow-lg bg-gradient-to-br from-gray-200 via-gray-300 to-gray-100 rounded-2xl gap-6 transition-all duration-300 hover:shadow-2xl animate-floating">
-   
+       <div className='flex flex-row w-full'>
+            <FontAwesomeIcon icon={faArrowLeft} size="x" className='p-3' onClick={handleBack} />
       <h1 className="text-gray-800 text-3xl font-bold text-center mb-2">
         Reset Password
       </h1>
+      </div>
       <h3 className="text-sm text-secondary m-0">Provide the password to recover your account.</h3>
       <form onSubmit={handleResetSubmit} className="animate-slide-up">
         <ul className="flex flex-col flex-wrap items-start justify-center gap-4">

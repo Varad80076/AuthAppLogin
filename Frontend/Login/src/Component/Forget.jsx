@@ -1,55 +1,65 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from "axios";
 import { forgetID } from "../util/allAPIs.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const ForgotPasswordForm = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(localStorage.getItem('email') || '');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  
-    //HANDLE RESET PASSWORD
-  const handleResetSubmit = async(event) => { 
-    event.preventDefault()
+  const handleBack = () => {
+    navigate("/");
+    setIsLoading(false);
+    localStorage.removeItem('email');
+  }
+
+  useEffect(() => {
+    localStorage.setItem('email', email);
+  }, [email]);
+
+  const handleResetSubmit = async (event) => {
+    event.preventDefault();
     setIsLoading(true);
+
     try {
-        const response = await axios.post(forgetID, {
-            email,
-            // password
-         });
-         
-         if (!response) {
-          toast.error(response.data.message);
-            navigate("/");
-            setIsLoading(false);
-            // throw new Error("Failed reset");
-         }
-         if (response.data.success) {
-            navigate("/");
-            toast.success(response.data.message);
-         } else {
-          toast.success(response.data.message);
-            navigate("/");
-            setIsLoading(false);
-         }
+      const response = await axios.post(forgetID, {
+        email,
+      });
 
-    } catch{
+      if (!response) {
+        toast.error(response.data.message);
+        navigate("/");
+        setIsLoading(false);
+      } else if (response.data.success) {
+        toast.success(response.data.message);
+        navigate("/");
+        localStorage.removeItem('email');
+      } else {
+        toast.error(response.data.message);
+        navigate("/");
+        setIsLoading(false);
+      }
+    } catch {
       toast.error("Please check email again");
-            setIsLoading(false);
+      setIsLoading(false);
     }
-    }   
+  };  
     
-
+  
 
   return (
     
     <div className="w-[350px] h-fit m-5 p-6 justify-center flex flex-col border border-gray-300 shadow-lg bg-gradient-to-br from-gray-200 via-gray-300 to-gray-100 rounded-2xl gap-6 transition-all duration-300 hover:shadow-2xl animate-floating">
-   
+      <div className='flex flex-row w-full'>
+      <FontAwesomeIcon icon={faArrowLeft} size="x" className='p-3' onClick={handleBack} />
       <h1 className="text-gray-800 text-3xl font-bold text-center mb-2">
         Forgot Password
       </h1>
+      </div>
       <h3 className="text-sm text-secondary m-0">Provide the email address associated with your account to recover your password.</h3>
       <form onSubmit={handleResetSubmit} className="animate-slide-up">
         <ul className="flex flex-col flex-wrap items-start justify-center gap-4">
