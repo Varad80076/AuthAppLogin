@@ -1,14 +1,30 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useEffect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const NextComponent = () => {
   const location = useLocation();
-  const { email, name} = location.state || {};
   const navigate = useNavigate();
 
-  const handlelogout= () => {
-    navigate("/")
-    toast.success("Logout Successfully!")
+  const email = location.state?.email || localStorage.getItem("email");
+  const name = location.state?.name || localStorage.getItem("name");
+
+  useEffect(() => {
+    if (location.state) {
+      localStorage.setItem("email", location.state.email);
+      localStorage.setItem("name", location.state.name);
+    }
+  }, [location.state]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("name");
+    navigate("/");
+    toast.success("Logout Successfully!");
+  };
+
+  if (!email || !name) {
+    navigate("/");
+    return null;
   }
 
   return (
@@ -23,7 +39,7 @@ const NextComponent = () => {
           </p>
           <div className="flex justify-center">
             <button
-              onClick={handlelogout}
+              onClick={handleLogout}
               className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-300"
               >
               Logout
