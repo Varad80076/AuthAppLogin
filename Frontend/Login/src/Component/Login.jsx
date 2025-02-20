@@ -36,7 +36,7 @@ function Login() {
             toast.error("failed to login");
             throw new Error("Failed to Login");
          }
-         setTimer(30); // 2 minutes in seconds
+         setTimer(120); // 2 minutes in seconds
          toast.success("OTP sent successfully");
          setIsLoading(false)
          startTimer();
