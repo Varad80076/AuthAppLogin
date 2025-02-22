@@ -37,7 +37,6 @@ const NextComponent = () => {
   };
 
   if (!email || !name) {
-    navigate("/");
     return null;
   }
 
