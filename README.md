@@ -102,7 +102,7 @@ This project is a full-stack web application for user authentication built using
 └── README.md
 ```
 <a href="https://example.com" target="_blank">
-  <img src="https://img.shields.io/badge/Click%20Here-blue?style=for-the-badge rounded" alt="Button">
+  <img src="https://img.shields.io/badge/Visit%20Application-blue?style=for-the-badge rounded-xl p-2" alt="Button">
 </a>
 
 
