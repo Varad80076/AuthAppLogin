@@ -238,7 +238,7 @@ const forgetpass = async (req,res) => {
          const mailResponse = await otpmailsender(user.name,email,resetLink, null, "RESET");
          return res.status(200).json({
             success: true,
-            message: "Mail send successfully",
+            message: "Reset link sended to your email.Please check your mail",
             jwtToken,
             email: user.email,
             name: user.name,
