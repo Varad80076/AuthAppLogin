@@ -101,23 +101,20 @@ This project is a full-stack web application for user authentication built using
 │   └── public
 └── README.md
 ```
-<a href="https://tinyurl.com/auth-application" target="_blank" style="
+<a href="https://example.com" target="_blank" style="
   display: inline-block;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #fff;
-  text-align: center;
+  border-radius: 50px;
+  overflow: hidden;
   text-decoration: none;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #ff416c, #ff4b2b);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0, 0, 0, 0.2)'">
-  Visit Application
+" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 12px 20px rgba(0, 0, 0, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 15px rgba(0, 0, 0, 0.2)'">
+  <img src="https://img.shields.io/badge/Click%20Here-blue?style=for-the-badge" alt="Button" style="
+    display: block;
+    border-radius: 50px;
+  ">
 </a>
+
 
 
 
