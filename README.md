@@ -103,18 +103,22 @@ This project is a full-stack web application for user authentication built using
 ```
 <a href="https://tinyurl.com/auth-application" target="_blank" style="
   display: inline-block;
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 16px;
   font-weight: bold;
   color: #fff;
+  text-align: center;
   text-decoration: none;
-  border-radius: 25px;
-  background: linear-gradient(90deg, #ff7e5f, #feb47b);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
-" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+" onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 20px rgba(0, 0, 0, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0, 0, 0, 0.2)'">
   Visit Application
 </a>
+
 
 
 ## Contributing
