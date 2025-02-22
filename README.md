@@ -102,7 +102,7 @@ This project is a full-stack web application for user authentication built using
 └── README.md
 ```
 <a href="https://tinyurl.com/auth-application" target="_blank">
-    <img alt="evershop-backend-demo" height="35" alt="EverShop Admin Demo" src="https://raw.githubusercontent.com/evershopcommerce/evershop/dev/.github/images/evershop-demo-back.png"/>
+    <img alt="evershop-backend-demo" height="35" alt="EverShop Admin Demo" src="https://drive.google.com/file/d/1GN2Y4MoJu1Q-czHuH-iUeSyEek6g2s3b/view?usp=drive_link"/>
   </a>
 
 ## Contributing
