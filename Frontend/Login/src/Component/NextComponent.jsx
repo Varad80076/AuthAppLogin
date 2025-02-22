@@ -6,8 +6,8 @@ const NextComponent = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState(localStorage.getItem("email") || "");
-  const [name, setName] = useState(localStorage.getItem("name") || "");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
