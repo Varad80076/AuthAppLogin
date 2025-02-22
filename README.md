@@ -109,7 +109,8 @@ This project is a full-stack web application for user authentication built using
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 " onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 12px 20px rgba(0, 0, 0, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 15px rgba(0, 0, 0, 0.2)'">
-  <img src="https://img.shields.io/badge/Click%20Here-blue?style=for-the-badge" alt="Button" style="
+  <img src="https://img.shields.io/matrix/:roomAlias
+" alt="Button" style="
     display: block;
     border-radius: 50px;
   ">
