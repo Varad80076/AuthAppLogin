@@ -101,9 +101,21 @@ This project is a full-stack web application for user authentication built using
 │   └── public
 └── README.md
 ```
-<a href="https://tinyurl.com/auth-application" target="_blank">
-  <img src="https://img.shields.io/badge/Visit%20Application-blue?style=for-the-badge" alt="Button">
+<a href="https://tinyurl.com/auth-application" target="_blank" style="
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  Visit Application
 </a>
+
 
 ## Contributing
 
