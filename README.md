@@ -45,8 +45,8 @@ This project is a full-stack web application for user authentication built using
 
    Create a `.env` file in the `backend` folder and add the following:
 
-   ```env
-   PORT=5000
+   ```env 
+   PORT=4000
    MONGO_URI=your-mongodb-connection-string
    JWT_SECRET=your-jwt-secret
    ```
@@ -101,6 +101,9 @@ This project is a full-stack web application for user authentication built using
 │   └── public
 └── README.md
 ```
+<a href="https://tinyurl.com/auth-application" target="_blank">
+  <img src="https://img.shields.io/badge/Visit%20Application-blue?style=for-the-badge" alt="Button">
+</a>
 
 ## Contributing
 
