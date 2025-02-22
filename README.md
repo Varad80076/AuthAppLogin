@@ -102,7 +102,21 @@ This project is a full-stack web application for user authentication built using
 └── README.md
 ```
 <a href="https://tinyurl.com/auth-application" target="_blank">
-    <img alt="evershop-backend-demo" height="35" alt="EverShop Admin Demo" src="https://drive.google.com/file/d/1GN2Y4MoJu1Q-czHuH-iUeSyEek6g2s3b/view?usp=drive_link"/>
+    <img alt="Authentication-App" height="35" alt="Authentication-App" src="https://img.shields.io/badge/Visit%20Application-blue?style=for-the-badge inline-block 
+  px-6 
+  py-3 
+  text-white 
+  font-bold 
+  text-lg 
+  bg-gradient-to-r 
+  from-blue-500 
+  to-purple-600 
+  rounded-full 
+  shadow-lg 
+  hover:shadow-xl 
+  hover:scale-105 
+  transition-transform 
+  duration-300"/>
   </a>
 
 ## Contributing
