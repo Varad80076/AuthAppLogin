@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 
 function Login() {
    const [email, setEmail] = useState(localStorage.getItem('email') ||"");
+   const [name, setName] = useState(localStorage.getItem('name') ||"");
    const [password, setPassword] = useState(localStorage.getItem('password') ||"");
    const [showPassword, setShowPassword] = useState(false);
    const navigate = useNavigate();
@@ -113,7 +114,7 @@ function Login() {
             navigate("/next", {
                state: { email: response.data.email, name: response.data.name},
             });
-            toast.success("Login Successfully!");
+            toast.success("Welcome"+{name}+"Login Successfully!");
             localStorage.removeItem('isOtpSent');
             localStorage.removeItem('token');
             setOtp('');
