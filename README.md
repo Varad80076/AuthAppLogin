@@ -101,13 +101,9 @@ This project is a full-stack web application for user authentication built using
 │   └── public
 └── README.md
 ```
-<a href="https://example.com" target="_blank">
-  <img src="https://img.shields.io/badge/Visit%20Application-blue?style=for-the-badge rounded-xl p-2" alt="Button">
-</a>
-
-
-
-
+<a href="https://tinyurl.com/auth-application" target="_blank">
+    <img alt="evershop-backend-demo" height="35" alt="EverShop Admin Demo" src="https://raw.githubusercontent.com/evershopcommerce/evershop/dev/.github/images/evershop-demo-back.png"/>
+  </a>
 
 ## Contributing
 
