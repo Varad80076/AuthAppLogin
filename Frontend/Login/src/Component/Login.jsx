@@ -114,6 +114,8 @@ function Login() {
             navigate("/next", {
                state: { email: response.data.email, name: response.data.name},
             });
+            setName(response.data.name);
+            toast(name)
             toast.success("Welcome"+{name}+"Login Successfully!");
             localStorage.removeItem('isOtpSent');
             localStorage.removeItem('token');
