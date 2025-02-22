@@ -10,22 +10,22 @@ const NextComponent = () => {
   const [name, setName] = useState(localStorage.getItem("name") || "");
 
   useEffect(() => {
-    if (location.state) {
+    const storedEmail = localStorage.getItem("email");
+    const storedName = localStorage.getItem("name");
+  
+    if (storedEmail && storedName) {
+      setEmail(storedEmail);
+      setName(storedName);
+    } else if (location.state) {
       localStorage.setItem("email", location.state.email);
       localStorage.setItem("name", location.state.name);
       setEmail(location.state.email);
       setName(location.state.name);
     } else {
-      const storedEmail = localStorage.getItem("email");
-      const storedName = localStorage.getItem("name");
-      if (storedEmail && storedName) {
-        setEmail(storedEmail);
-        setName(storedName);
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     }
   }, [location.state, navigate]);
+  
 
   const handleLogout = () => {
     localStorage.removeItem("email");
