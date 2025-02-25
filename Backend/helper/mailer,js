@@ -23,7 +23,8 @@ require('dotenv').config();
                 <h4>Dear ${name},</h4>
                   <p>Your One-Time Password (OTP) for email verification is:</p>
                     <h3 style="color: #4CAF50;">${otp}</h3>
-                      <p>This code is valid for 10 minutes. Please enter the code to verify your email address.</p>
+                      <p>OTP is valid only for 02:00 mins. Do not share this OTP with anyone.</p>
+                      <p>Please note that the OTP is valid for only one session. If you try to refresh the page or leave the portal, you will be required to regenerate a new OTP.</p>
                     <p>If you didn’t request this, you can safely ignore this email.</p>
                   <p>Best regards,</p>
                 <p>Varad Badgujar</p>

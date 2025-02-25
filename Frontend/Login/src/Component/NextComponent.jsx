@@ -16,15 +16,20 @@ const NextComponent = () => {
     if (storedEmail && storedName) {
       setEmail(storedEmail);
       setName(storedName);
-    } else if (location.state) {
+    } else if (location.state?.email && location.state?.name) {
       localStorage.setItem("email", location.state.email);
       localStorage.setItem("name", location.state.name);
       setEmail(location.state.email);
       setName(location.state.name);
+      
     } else {
       navigate("/");
+      localStorage.removeItem("email");
+      localStorage.removeItem("name");
     }
   }, [location.state, navigate]);
+
+  
   
 
   const handleLogout = () => {
