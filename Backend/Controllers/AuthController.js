@@ -181,7 +181,9 @@ const resendOTP = async (req, res) => {
    console.log("server is running");
 
    try {
-      const { email } = req.body;
+      const { token } = req.body;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const { email, _id } = decoded;
       let otp = otpGenerator.generate(4, {
          upperCaseAlphabets: false,
          specialChars: false,

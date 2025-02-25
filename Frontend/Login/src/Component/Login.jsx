@@ -107,7 +107,6 @@ function Login() {
    //HANDEL OTP VERIFICATION REQUEST
    const handleOtpVerification = async (e) => {
       e.preventDefault();
-      console.log(token);
       try {
          const response = await axios.post(verifyOtp, { token, otp });
          if (response.data.success ) {
@@ -133,7 +132,6 @@ function Login() {
          const errorMessage =
          error.response?.data?.message || "Failed to verify OTP. Please try again.";
          toast.warn(errorMessage);
-         console.log(email)
          setIsOtpSent(true);
          setOtp("");
          setPassword("");
@@ -145,7 +143,7 @@ function Login() {
       e.preventDefault();
       setIsLoading(true);
       try {
-         const response = await axios.post(resendOtpUrl, { email });
+         const response = await axios.post(resendOtpUrl, { token });
          if (!response) {
             toast.error("failed to login");
             throw new Error("Failed to Login");
