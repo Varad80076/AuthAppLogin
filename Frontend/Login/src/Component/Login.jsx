@@ -267,8 +267,8 @@ function Login() {
                         </p>
                      </div>
                      
-                     <Link className="ml-20 text-center" onClick={handleForgotClick}>
-                        <span className="mr-1">Forget</span> 
+                     <Link className="ml-20 text-center " onClick={handleForgotClick}>
+                        <span className="mr-1 ">Forget</span> 
                         <span className="text-blue-600 ">Password ?</span> 
                      </Link>
                      <button
@@ -289,7 +289,7 @@ function Login() {
                         <Link
                            to={"/signup"}
                            className="text-blue-600 hover:underline font-semibold px-1">
-                           signup
+                           Create account
                         </Link>
                      </span>
                   </ul>

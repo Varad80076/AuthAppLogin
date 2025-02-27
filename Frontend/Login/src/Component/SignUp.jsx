@@ -106,7 +106,7 @@ function SignUp() {
          {isSignUp ? (
             <div className="w-[350px] h-fit m-5 p-6 justify-center flex flex-col border border-gray-300 shadow-lg bg-gradient-to-br from-gray-200 via-gray-300 to-gray-100 rounded-2xl gap-6 transition-all duration-300 hover:shadow-2xl animate-floating">
                <h1 className="text-gray-800 text-3xl font-bold text-center mb-2">
-                  Sign Up Form
+                  Create Account
                </h1>
                <form onSubmit={collectData} className="animate-slide-up">
                   <ul className="flex flex-col flex-wrap items-start justify-center gap-4">
